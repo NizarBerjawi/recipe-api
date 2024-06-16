@@ -16,6 +16,7 @@ return new class extends Migration
             $table->float('quantity');
             $table->string('name');
             $table->foreignUuid('unit_uuid')->references('uuid')->on('units');
+            $table->text('display_text');
             $table->timestamps();
         });
     }
