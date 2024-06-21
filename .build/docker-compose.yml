@@ -37,7 +37,7 @@ services:
       - api_network
     depends_on:
       - db
-      - mailhog
+      - redis
   db:
     image: postgres:16.3-alpine3.20
     restart: always
@@ -49,6 +49,16 @@ services:
       - "5432:5432"
     # volumes:
     # - .build/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - api_network
+  redis:
+    image: redis:7.2.5-alpine3.20
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    volumes:
+      - cache:/data
     networks:
       - api_network
   mailhog:
@@ -120,7 +130,9 @@ services:
     entrypoint: ['/var/www/html/vendor/bin/phpunit']
     networks:
       - api_network
-# Docker Networks
 networks:
   api_network:
     driver: bridge
+volumes:
+  cache:
+    driver: local

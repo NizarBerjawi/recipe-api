@@ -12,21 +12,27 @@ ARG UID
 WORKDIR /var/www/html/
 
 RUN echo "UTC" > /etc/timezone
-RUN apk add --no-cache \
-    vim \
+RUN apk upgrade --no-cache && \
+  apk add --no-cache --virtual .persistent-deps \
     git \
-    zip \
     npm \
+    zip \
     curl \
     unzip \
     nodejs \
     libzip-dev \
-    postgresql-dev && \
-  docker-php-ext-install \
+    postgresql-dev \
+  && apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
+  && pecl install \
+    redis \
+  && docker-php-ext-install \
     pdo \
     pgsql \
     pdo_pgsql \
-    zip
+    zip \
+  && docker-php-ext-enable \
+    redis
 
 RUN addgroup --gid ${GID} ${USER}
 RUN adduser \
@@ -37,7 +43,6 @@ RUN adduser \
   --disabled-password ${USER}
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-COPY --from=stripe/stripe-cli:latest /bin/stripe /usr/bin/stripe
 
 EXPOSE 9000
 
