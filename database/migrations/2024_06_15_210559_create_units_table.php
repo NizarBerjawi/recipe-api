@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->string('name');
+            $table->string('code');
             $table->string('label');
             $table->timestamps();
         });

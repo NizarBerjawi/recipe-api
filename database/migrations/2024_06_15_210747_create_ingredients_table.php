@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('ingredients', function (Blueprint $table) {
             $table->uuid()->primary();
+            $table->foreignUuid('recipe_uuid')->references('uuid')->on('recipes');
+            $table->foreignUuid('unit_uuid')->nullable()->references('uuid')->on('units');
             $table->float('quantity');
             $table->string('name');
-            $table->foreignUuid('unit_uuid')->references('uuid')->on('units');
             $table->text('display_text');
             $table->timestamps();
         });

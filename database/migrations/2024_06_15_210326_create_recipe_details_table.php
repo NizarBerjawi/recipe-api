@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('recipe_details', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->string('prep_time');
-            $table->string('cook_time');
-            $table->string('servings');
+            $table->integer('prep_time');
+            $table->integer('cook_time');
+            $table->integer('servings');
             $table->foreignUuid('recipe_uuid')->references('uuid')->on('recipes');
 
             $table->timestamps();

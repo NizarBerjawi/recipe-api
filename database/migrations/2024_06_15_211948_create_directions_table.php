@@ -14,8 +14,13 @@ return new class extends Migration
         Schema::create('directions', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->text('direction');
+            $table->integer('order');
             $table->foreignUuid('recipe_uuid')->references('uuid')->on('recipes');
             $table->timestamps();
+        });
+
+        Schema::table('directions', function(Blueprint $table) {
+            $table->unique(['order', 'recipe_uuid']);
         });
     }
 
