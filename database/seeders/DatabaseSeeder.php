@@ -2,6 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Direction;
+use App\Models\Ingredient;
+use App\Models\Recipe;
+use App\Models\RecipeDetail;
+use App\Models\Unit;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +18,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // We create 10 users
+        $users = User::factory()->count(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($users as $user) {
+            $recipes = Recipe::factory()
+                ->count(fake()->numberBetween(0, 20))
+                ->for($user)
+                ->has(
+                    RecipeDetail::factory()
+                )
+                ->has(
+                    Ingredient::factory()
+                        ->count(fake()->numberBetween(0, 10))
+                        ->for(Unit::factory())
+                )
+                ->has(
+                    Direction::factory()
+                        ->count(fake()->numberBetween(5, 15))
+                )
+                ->create();
+        }
     }
 }
