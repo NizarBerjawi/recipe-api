@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -13,7 +14,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasUuids;
 
-        /**
+    /**
      * The primary key for the model.
      *
      * @var string
@@ -59,5 +60,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the recpies for the user.
+     */ 
+    public function recipes(): HasMany
+    {
+        return $this->hasMany(Recipe::class);
     }
 }
