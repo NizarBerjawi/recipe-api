@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RecipeDetailController;
@@ -16,4 +17,8 @@ Route::controller(IngredientController::class)->group(function () {
 
 Route::controller(RecipeDetailController::class)->group(function () {
     Route::get('/recipeDetails', 'index');
+});
+
+Route::controller(DirectionController::class)->group(function () {
+    Route::get('/directions', 'index');
 });
