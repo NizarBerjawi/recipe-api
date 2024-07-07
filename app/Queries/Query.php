@@ -6,7 +6,10 @@ use App\Queries\Concerns\HasFields;
 use App\Queries\Concerns\HasFilters;
 use App\Queries\Concerns\HasIncludes;
 use App\Queries\Concerns\HasSorts;
-use Spatie\QueryBuilder\QueryBuilder;
+use App\Queries\Concerns\SubjectOf;
+use App\Queries\QueryBuilder;
+use Illuminate\Support\Arr;
+use ReflectionClass;
 
 abstract class Query
 {
@@ -52,5 +55,18 @@ abstract class Query
     /**
      * Return the "subject" for this query
      */
-    abstract public function subject(): string;
+    public function subject()
+    {
+        $reflectionClass = new ReflectionClass(static::class);
+
+        $attributes = $reflectionClass->getAttributes(SubjectOf::class);
+
+        /** @var \ReflectionAttribute */
+        $subject = Arr::first($attributes);
+
+        /** @var string */
+        $modelClass = Arr::first($subject->getArguments());
+
+        return $modelClass;
+    }
 }
