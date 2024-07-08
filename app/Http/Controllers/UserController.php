@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UnitResource;
-use App\Queries\UnitQuery;
+use App\Http\Resources\UserResource;
+use App\Queries\UserQuery;
 use Illuminate\Http\Request;
 
-class UnitController extends Controller
+class UserController extends Controller
 {
-    /**
+/**
      * Display a listing of the resource.
      */
-    public function index(UnitQuery $query)
+    public function index(UserQuery $query)
     {
-        return UnitResource::collection(
+        return UserResource::collection(
             $query->builder()->get()
         );
     }
@@ -66,3 +66,4 @@ class UnitController extends Controller
         //
     }
 }
+
