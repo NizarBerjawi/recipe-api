@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Recipe\RecipeCollection;
+use App\Http\Resources\Recipe\RecipeResource;
+use App\Models\Recipe;
 use App\Queries\RecipeQuery;
 use Illuminate\Http\Request;
 
@@ -37,9 +39,11 @@ class RecipeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(RecipeQuery $query, Recipe $recipe)
     {
-        //
+        return RecipeResource::make(
+            $query->builder()->first()
+        );
     }
 
     /**

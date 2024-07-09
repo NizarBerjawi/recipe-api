@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Ingredient\IngredientCollection;
+use App\Http\Resources\Ingredient\IngredientResource;
+use App\Models\Ingredient;
 use App\Queries\IngredientQuery;
 use Illuminate\Http\Request;
 
@@ -37,9 +39,11 @@ class IngredientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(IngredientQuery $query, Ingredient $ingredient)
     {
-        //
+        return IngredientResource::make(
+            $query->builder()->first()
+        );
     }
 
     /**

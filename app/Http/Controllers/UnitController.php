@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Unit\UnitCollection;
+use App\Http\Resources\Unit\UnitResource;
+use App\Models\Unit;
 use App\Queries\UnitQuery;
 use Illuminate\Http\Request;
 
@@ -37,9 +39,11 @@ class UnitController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(UnitQuery $query, Unit $unit)
     {
-        //
+        return UnitResource::make(
+            $query->builder()->first()
+        );
     }
 
     /**

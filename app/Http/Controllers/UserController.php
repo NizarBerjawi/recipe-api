@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\User\UserCollection;
+use App\Http\Resources\User\UserResource;
+use App\Models\User;
 use App\Queries\UserQuery;
 use Illuminate\Http\Request;
 
@@ -37,9 +39,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(UserQuery $query, User $user)
     {
-        //
+        return UserResource::make(
+            $query->builder()->first()
+        );
     }
 
     /**

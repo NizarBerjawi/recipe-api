@@ -29,6 +29,9 @@ class UserResource extends JsonResource
             'relationships' => $this->collectRelationships([
                 'recipes',
             ]),
+            'links' => [
+                'self' => route('user.show', $this->resource->getKey())
+            ]
         ];
     }
 }

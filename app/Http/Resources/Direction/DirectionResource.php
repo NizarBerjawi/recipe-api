@@ -27,6 +27,9 @@ class DirectionResource extends JsonResource
                 'updatedAt' => $this->resource->updated_at,
             ],
             'relationships' => $this->collectRelationships(['recipe']),
+            'links' => [
+                'self' => route('direction.show', $this->resource->getKey())
+            ]
         ];
     }
 }

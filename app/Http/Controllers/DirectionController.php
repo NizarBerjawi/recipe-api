@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Direction\DirectionCollection;
+use App\Http\Resources\Direction\DirectionResource;
+use App\Models\Direction;
 use App\Queries\DirectionQuery;
 use Illuminate\Http\Request;
 
@@ -37,9 +39,11 @@ class DirectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(DirectionQuery $query, Direction $direction)
     {
-        //
+        return DirectionResource::make(
+            $query->builder()->first()
+        );
     }
 
     /**

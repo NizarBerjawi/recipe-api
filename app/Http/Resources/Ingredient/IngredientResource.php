@@ -28,6 +28,9 @@ class IngredientResource extends JsonResource
                 'updatedAt' => $this->resource->updated_at,
             ],
             'relationships' => $this->collectRelationships(['recipe', 'unit']),
+            'links' => [
+                'self' => route('ingredient.show', $this->resource->getKey())
+            ]
         ];
     }
 }
