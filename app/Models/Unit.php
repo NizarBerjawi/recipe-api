@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Api\ApiModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Unit extends Model
+class Unit extends ApiModel
 {
     use HasFactory, HasUuids;
 

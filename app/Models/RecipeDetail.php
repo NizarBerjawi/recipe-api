@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Api\ApiModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RecipeDetail extends Model
+class RecipeDetail extends ApiModel
 {
     use HasFactory, HasUuids;
 
