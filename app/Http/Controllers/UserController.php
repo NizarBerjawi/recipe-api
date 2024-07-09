@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
+use App\Http\Resources\User\UserCollection;
 use App\Queries\UserQuery;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index(UserQuery $query)
     {
-        return UserResource::collection(
+        return UserCollection::make(
             $query->builder()->get()
         );
     }

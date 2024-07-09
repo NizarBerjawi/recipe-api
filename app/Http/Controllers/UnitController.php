@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UnitResource;
+use App\Http\Resources\Unit\UnitCollection;
 use App\Queries\UnitQuery;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class UnitController extends Controller
      */
     public function index(UnitQuery $query)
     {
-        return UnitResource::collection(
+        return UnitCollection::make(
             $query->builder()->get()
         );
     }

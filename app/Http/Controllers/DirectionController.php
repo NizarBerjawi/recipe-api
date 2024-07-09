@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\DirectionResource;
+use App\Http\Resources\Direction\DirectionCollection;
 use App\Queries\DirectionQuery;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class DirectionController extends Controller
      */
     public function index(DirectionQuery $query)
     {
-        return DirectionResource::collection(
+        return DirectionCollection::make(
             $query->builder()->get()
         );
     }

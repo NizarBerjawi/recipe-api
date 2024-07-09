@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\RecipeDetailResource;
+use App\Http\Resources\RecipeDetail\RecipeDetailCollection;
 use App\Queries\RecipeDetailQuery;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class RecipeDetailController extends Controller
      */
     public function index(RecipeDetailQuery $query)
     {
-        return RecipeDetailResource::collection(
+        return RecipeDetailCollection::make(
             $query->builder()->get()
         );
     }

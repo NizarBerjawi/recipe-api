@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\IngredientResource;
+use App\Http\Resources\Ingredient\IngredientCollection;
 use App\Queries\IngredientQuery;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class IngredientController extends Controller
      */
     public function index(IngredientQuery $query)
     {
-        return IngredientResource::collection(
+        return IngredientCollection::make(
             $query->builder()->get()
         );
     }
