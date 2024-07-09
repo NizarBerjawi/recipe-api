@@ -18,11 +18,7 @@ class UserCollection extends ResourceCollection
     public function with(Request $request): array
     {
         return $this->collectIncludes([
-            'user',
-            'recipeDetail',
-            'directions',
-            'ingredients',
-            'ingredients.unit',
+            'recipes',
         ]);
     }
 }

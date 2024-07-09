@@ -20,6 +20,7 @@ class DirectionQuery extends Query
     {
         return [
             AllowedInclude::relationship('recipe'),
+            AllowedInclude::relationship('recipe.user'),
         ];
     }
 

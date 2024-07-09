@@ -17,6 +17,8 @@ class RecipeDetailCollection extends ResourceCollection
      */
     public function with(Request $request): array
     {
-        return $this->collectIncludes(['recipe']);
+        return $this->collectIncludes([
+            'recipe', 'recipe.user',
+        ]);
     }
 }

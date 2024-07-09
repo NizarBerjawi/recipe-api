@@ -19,7 +19,7 @@ class UserQuery extends Query
     public function includes(): array
     {
         return [
-            AllowedInclude::relationship('recipe'),
+            AllowedInclude::relationship('recipes'),
         ];
     }
 

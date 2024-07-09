@@ -20,6 +20,7 @@ class RecipeDetailQuery extends Query
     {
         return [
             AllowedInclude::relationship('recipe'),
+            AllowedInclude::relationship('recipe.user'),
         ];
     }
 

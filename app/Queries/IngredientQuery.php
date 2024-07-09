@@ -20,6 +20,7 @@ class IngredientQuery extends Query
     {
         return [
             AllowedInclude::relationship('recipe'),
+            AllowedInclude::relationship('recipe.user'),
             AllowedInclude::relationship('unit'),
         ];
     }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Blade;
 
 class Ingredient extends ApiModel
@@ -54,9 +53,9 @@ class Ingredient extends ApiModel
     /**
      * Get the recipe associated with this ingredient.
      */
-    public function recipe(): HasOne
+    public function recipe(): BelongsTo
     {
-        return $this->hasOne(Recipe::class);
+        return $this->belongsTo(Recipe::class);
     }
 
     /**
