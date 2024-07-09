@@ -77,7 +77,7 @@ class DirectionQuery extends Query
             'uuid',
             'direction',
             'order',
-            'recipe_uuid',
+            'recipeUuid',
             'createdAt',
             'updatedAt',
         ];

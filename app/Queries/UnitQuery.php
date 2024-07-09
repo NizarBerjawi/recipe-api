@@ -19,9 +19,7 @@ class UnitQuery extends Query
      */
     public function includes(): array
     {
-        return [
-            AllowedInclude::relationship('ingredient'),
-        ];
+        return [];
     }
 
     /**
