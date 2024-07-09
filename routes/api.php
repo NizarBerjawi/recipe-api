@@ -9,32 +9,38 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(RecipeController::class)->group(function () {
-    Route::get('/recipes', 'index')->name('recipe.index');
-    Route::get('/recipes/{recipe}', 'show')->name('recipe.show');
+    Route::get('/recipes', 'index')->name('recipes.index');
+    Route::get('/recipes/{recipe}', 'show')->name('recipes.show');
+    Route::delete('/recipes/{recipe}', 'destroy')->name('recipes.destroy');
 });
 
 Route::controller(IngredientController::class)->group(function () {
-    Route::get('/ingredients', 'index')->name('ingredient.index');
-    Route::get('/ingredients/{ingredient}', 'show')->name('ingredient.show');
+    Route::get('/ingredients', 'index')->name('ingredients.index');
+    Route::get('/ingredients/{ingredient}', 'show')->name('ingredients.show');
+    Route::delete('/ingredients/{ingredient}', 'destroy')->name('ingredients.destroy');
 });
 
 Route::controller(RecipeDetailController::class)->group(function () {
-    Route::get('/recipeDetails', 'index')->name('recipeDetail.index');
-    Route::get('/recipeDetails/{recipeDetail}', 'show')->name('recipeDetail.show');
+    Route::get('/recipeDetails', 'index')->name('recipeDetails.index');
+    Route::get('/recipeDetails/{recipeDetail}', 'show')->name('recipeDetails.show');
+    Route::delete('/recipeDetails/{recipeDetail}', 'destroy')->name('recipeDetails.destroy');
 
 });
 
 Route::controller(DirectionController::class)->group(function () {
-    Route::get('/directions', 'index')->name('direction.index');
-    Route::get('/directions/{direction}', 'show')->name('direction.show');
+    Route::get('/directions', 'index')->name('directions.index');
+    Route::get('/directions/{direction}', 'show')->name('directions.show');
+    Route::delete('/directions/{direction}', 'destroy')->name('directions.destroy');
 });
 
 Route::controller(UnitController::class)->group(function () {
-    Route::get('/units', 'index')->name('unit.index');
-    Route::get('/units/{unit}', 'show')->name('unit.show');
+    Route::get('/units', 'index')->name('units.index');
+    Route::get('/units/{unit}', 'show')->name('units.show');
+    Route::delete('/units/{unit}', 'destroy')->name('units.destroy');
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/users', 'index')->name('user.index');
-    Route::get('/users/{user}', 'show')->name('user.show');
+    Route::get('/users', 'index')->name('users.index');
+    Route::get('/users/{user}', 'show')->name('users.show');
+    Route::delete('/users/{user}', 'destroy')->name('users.destroy');
 });

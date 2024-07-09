@@ -29,7 +29,7 @@ class RecipeDetailResource extends JsonResource
             ],
             'relationships' => $this->collectRelationships(['recipe']),
             'links' => [
-                'self' => route('recipeDetail.show', $this->resource->getKey())
+                'self' => route('recipeDetails.show', $this->resource->getKey())
             ]
         ];
     }

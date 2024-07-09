@@ -30,7 +30,7 @@ class RecipeResource extends JsonResource
                 'user', 'recipeDetail', 'directions', 'ingredients',
             ]),
             'links' => [
-                'self' => route('recipe.show', $this->resource->getKey())
+                'self' => route('recipes.show', $this->resource->getKey())
             ]
         ];
     }

@@ -27,7 +27,7 @@ class UnitResource extends JsonResource
                 'updatedAt' => $this->resource->updated_at,
             ],
             'links' => [
-                'self' => route('unit.show', $this->resource->getKey())
+                'self' => route('units.show', $this->resource->getKey())
             ]
         ];
     }
