@@ -22,7 +22,7 @@ class UserCollection extends ResourceCollection
             'recipeDetail',
             'directions',
             'ingredients',
-            'ingredients.unit'
+            'ingredients.unit',
         ]);
     }
 }

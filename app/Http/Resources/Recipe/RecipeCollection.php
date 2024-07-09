@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Recipe;
 
 use App\Http\Resources\Concerns\ManagesJsonApiSpec;
-use App\Queries\RecipeQuery;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -23,7 +22,7 @@ class RecipeCollection extends ResourceCollection
             'recipeDetail',
             'directions',
             'ingredients',
-            'ingredients.unit'
+            'ingredients.unit',
         ]);
     }
 }

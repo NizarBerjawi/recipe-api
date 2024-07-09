@@ -71,7 +71,7 @@ class Ingredient extends ApiModel
     {
         return Blade::render($this->display_text, [
             'quantity' => $this->quantity,
-            'name' => $this->name
+            'name' => $this->name,
         ], true);
     }
 }

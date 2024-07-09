@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     use ManagesJsonApiSpec;
-    
+
     /**
      * Transform the resource into an array.
      *
@@ -27,7 +27,7 @@ class UserResource extends JsonResource
                 'updatedAt' => $this->resource->updated_at,
             ],
             'relationships' => $this->collectRelationships([
-                'recipes', 
+                'recipes',
             ]),
         ];
     }

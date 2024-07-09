@@ -2,8 +2,8 @@
 
 namespace App\Queries;
 
-use App\Queries\Concerns\SubjectOf;
 use App\Models\Recipe;
+use App\Queries\Concerns\SubjectOf;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\AllowedSort;

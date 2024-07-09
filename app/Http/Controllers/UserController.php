@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-/**
+    /**
      * Display a listing of the resource.
      */
     public function index(UserQuery $query)
@@ -66,4 +66,3 @@ class UserController extends Controller
         //
     }
 }
-

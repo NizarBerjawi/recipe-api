@@ -19,7 +19,7 @@ class UnitFactory extends Factory
     {
         return [
             'code' => Str::of(fake()->hexColor())->upper(),
-            'label' => fake()->text(12)
+            'label' => fake()->text(12),
         ];
     }
 }

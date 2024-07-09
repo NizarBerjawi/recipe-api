@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Ingredient;
 
 use App\Http\Resources\Concerns\ManagesJsonApiSpec;
-use App\Queries\RecipeQuery;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

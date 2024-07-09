@@ -147,14 +147,14 @@ trait ManagesJsonApiSpec
         return [
             'links' => Arr::get($default, 'links'),
             'meta' => [
-                "currentPage" => Arr::get($default, 'meta.current_page'),
-                "from" => Arr::get($default, 'meta.from'),
-                "lastPage" => Arr::get($default, 'meta.last_page'),
-                "links" => Arr::get($default, 'meta.links'),
-                "path" => Arr::get($default, 'meta.path'),
-                "perPage" => Arr::get($default, 'meta.per_page'),
-                "to" => Arr::get($default, 'meta.to'),
-                "total" => Arr::get($default, 'meta.total'),
+                'currentPage' => Arr::get($default, 'meta.current_page'),
+                'from' => Arr::get($default, 'meta.from'),
+                'lastPage' => Arr::get($default, 'meta.last_page'),
+                'links' => Arr::get($default, 'meta.links'),
+                'path' => Arr::get($default, 'meta.path'),
+                'perPage' => Arr::get($default, 'meta.per_page'),
+                'to' => Arr::get($default, 'meta.to'),
+                'total' => Arr::get($default, 'meta.total'),
             ],
         ];
     }

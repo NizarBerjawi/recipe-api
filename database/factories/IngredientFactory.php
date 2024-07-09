@@ -22,7 +22,7 @@ class IngredientFactory extends Factory
             'name' => fake()->text(20),
             'display_text' => Str::of(fake()->text(64))
                 ->lcfirst()
-                ->prepend('{{ $quantity }} {{ $name }} ')
+                ->prepend('{{ $quantity }} {{ $name }} '),
         ];
     }
 }

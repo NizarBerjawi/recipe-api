@@ -5,8 +5,6 @@ namespace App\Queries\Concerns;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Spatie\QueryBuilder\Exceptions\AllowedFieldsMustBeCalledBeforeAllowedIncludes;
-use Spatie\QueryBuilder\Exceptions\InvalidFieldQuery;
 use Spatie\QueryBuilder\Exceptions\UnknownIncludedFieldsQuery;
 
 trait AddsFieldsToQuery
@@ -36,11 +34,11 @@ trait AddsFieldsToQuery
 
         $fields = $this->request->fields()
             ->mapWithKeys(fn ($fields, $table) => [
-                $table => config('query-builder.allow_selecting_fields_as_camel_case', false) 
-                    ? Arr::map($fields, fn ($field) => Str::snake($field)) 
-                    : $fields
+                $table => config('query-builder.allow_selecting_fields_as_camel_case', false)
+                    ? Arr::map($fields, fn ($field) => Str::snake($field))
+                    : $fields,
             ]
-        )->get($tableOrRelation);
+            )->get($tableOrRelation);
 
         if (! $fields) {
             return [];
@@ -65,7 +63,7 @@ trait AddsFieldsToQuery
         if (Str::contains($field, '.')) {
             if (config('query-builder.allow_selecting_fields_as_camel_case', false)) {
                 $last = Str::afterLast($field, '.');
-                
+
                 return Str::replaceLast($last, Str::snake($last), $field);
             }
 
@@ -79,5 +77,3 @@ trait AddsFieldsToQuery
         return "{$table}.{$field}";
     }
 }
-
-

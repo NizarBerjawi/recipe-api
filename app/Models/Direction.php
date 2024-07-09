@@ -32,7 +32,7 @@ class Direction extends ApiModel
      */
     protected $fillable = [
         'direction',
-        'order'
+        'order',
     ];
 
     /**

@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends ApiUser
 {
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory, HasUuids, Notifiable;
 
     /**
      * The primary key for the model.
@@ -64,7 +64,7 @@ class User extends ApiUser
 
     /**
      * Get the recpies for the user.
-     */ 
+     */
     public function recipes(): HasMany
     {
         return $this->hasMany(Recipe::class);

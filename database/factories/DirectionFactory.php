@@ -23,14 +23,14 @@ class DirectionFactory extends Factory
     {
         $definition = [
             'direction' => fake()->text(),
-            'order' => static::$order
+            'order' => static::$order,
         ];
 
-        ++static::$order;
+        static::$order++;
 
         if ($this->count < static::$order) {
             static::$order = 1;
-        };
+        }
 
         return $definition;
     }

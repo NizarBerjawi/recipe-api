@@ -2,8 +2,6 @@
 
 namespace App\Queries;
 
-use App\Models\RecipeDetail;
-use App\Models\Unit;
 use App\Models\User;
 use App\Queries\Concerns\SubjectOf;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -61,7 +59,7 @@ class UserQuery extends Query
     {
         return [
             'uuid',
-            'name', 
+            'name',
             'email',
             'createdAt',
             'updatedAt',

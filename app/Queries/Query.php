@@ -7,7 +7,6 @@ use App\Queries\Concerns\HasFilters;
 use App\Queries\Concerns\HasIncludes;
 use App\Queries\Concerns\HasSorts;
 use App\Queries\Concerns\SubjectOf;
-use App\Queries\QueryBuilder;
 use Illuminate\Support\Arr;
 use ReflectionClass;
 

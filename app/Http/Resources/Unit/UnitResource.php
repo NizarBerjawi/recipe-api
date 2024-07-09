@@ -25,7 +25,7 @@ class UnitResource extends JsonResource
                 'label' => $this->resource->label,
                 'createdAt' => $this->resource->created_at,
                 'updatedAt' => $this->resource->updated_at,
-            ]
+            ],
         ];
     }
 }

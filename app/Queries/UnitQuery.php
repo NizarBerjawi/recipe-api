@@ -2,11 +2,9 @@
 
 namespace App\Queries;
 
-use App\Models\RecipeDetail;
 use App\Models\Unit;
 use App\Queries\Concerns\SubjectOf;
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\AllowedSort;
 
 #[SubjectOf(Unit::class)]
@@ -58,7 +56,7 @@ class UnitQuery extends Query
     {
         return [
             'uuid',
-            'code', 
+            'code',
             'label',
             'createdAt',
             'updatedAt',

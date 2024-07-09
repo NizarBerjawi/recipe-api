@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class RecipeDetailController extends Controller
 {
- /**
+    /**
      * Display a listing of the resource.
      */
     public function index(RecipeDetailQuery $query)

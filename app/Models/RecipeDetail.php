@@ -47,7 +47,7 @@ class RecipeDetail extends ApiModel
         return [
             'prep_time' => 'integer',
             'cook_time' => 'integer',
-            'servings' => 'integer'
+            'servings' => 'integer',
         ];
     }
 

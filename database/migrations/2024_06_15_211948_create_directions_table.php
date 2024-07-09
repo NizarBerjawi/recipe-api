@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('directions', function(Blueprint $table) {
+        Schema::table('directions', function (Blueprint $table) {
             $table->unique(['order', 'recipe_uuid']);
         });
     }

@@ -27,7 +27,7 @@ class RecipeResource extends JsonResource
                 'updatedAt' => $this->resource->updated_at,
             ],
             'relationships' => $this->collectRelationships([
-                'user', 'recipeDetail', 'directions', 'ingredients', 
+                'user', 'recipeDetail', 'directions', 'ingredients',
             ]),
         ];
     }
