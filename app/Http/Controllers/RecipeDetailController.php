@@ -14,7 +14,7 @@ class RecipeDetailController extends Controller
     public function index(RecipeDetailQuery $query)
     {
         return RecipeDetailCollection::make(
-            $query->builder()->get()
+            $query->builder()->jsonPaginate()
         );
     }
 

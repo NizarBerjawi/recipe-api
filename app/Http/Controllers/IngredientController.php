@@ -14,7 +14,7 @@ class IngredientController extends Controller
     public function index(IngredientQuery $query)
     {
         return IngredientCollection::make(
-            $query->builder()->get()
+            $query->builder()->jsonPaginate()
         );
     }
 

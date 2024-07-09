@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index(UserQuery $query)
     {
         return UserCollection::make(
-            $query->builder()->get()
+            $query->builder()->jsonPaginate()
         );
     }
 

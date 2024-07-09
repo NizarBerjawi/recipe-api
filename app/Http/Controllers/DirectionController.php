@@ -14,7 +14,7 @@ class DirectionController extends Controller
     public function index(DirectionQuery $query)
     {
         return DirectionCollection::make(
-            $query->builder()->get()
+            $query->builder()->jsonPaginate()
         );
     }
 

@@ -14,7 +14,7 @@ class RecipeController extends Controller
     public function index(RecipeQuery $query)
     {
         return RecipeCollection::make(
-            $query->builder()->get()
+            $query->builder()->jsonPaginate()
         );
     }
 

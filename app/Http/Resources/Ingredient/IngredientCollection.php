@@ -12,16 +12,6 @@ class IngredientCollection extends ResourceCollection
     use ManagesJsonApiSpec;
 
     /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
-    {
-        return $this->collection->all();
-    }
-
-        /**
      * Get any additional data that should be returned with the resource array.
      *
      * @return array<string, \Illuminate\Support\Collection<(int|string), mixed>>

@@ -14,7 +14,7 @@ class UnitController extends Controller
     public function index(UnitQuery $query)
     {
         return UnitCollection::make(
-            $query->builder()->get()
+            $query->builder()->jsonPaginate()
         );
     }
 

@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
@@ -21,26 +22,6 @@ trait ManagesJsonApiSpec
      * @var \Illuminate\Support\Collection<string, \Illuminate\Http\Resources\Json\JsonResource>
      */
     private $includes;
-
-    /**
-     * Create a new resource instance.
-     *
-     * @param  mixed  ...$parameters
-     * @return static
-     */
-    public static function make(...$parameters)
-    {
-        return parent::make(...$parameters)->loadCustomRelations();
-    }
-
-    /**
-     * Load any custom relations that can't be loaded using
-     * Queries
-     */
-    public function loadCustomRelations(): static
-    {
-        return $this;
-    }
 
     /**
      * Determine whether we should append the 'included' attribute
@@ -156,9 +137,32 @@ trait ManagesJsonApiSpec
     }
 
     /**
+     * Add the pagination information to the response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<string, array<string, mixed>
+     */
+    public function paginationInformation($request, $paginated, $default): array
+    {
+        return [
+            'links' => Arr::get($default, 'links'),
+            'meta' => [
+                "currentPage" => Arr::get($default, 'meta.current_page'),
+                "from" => Arr::get($default, 'meta.from'),
+                "lastPage" => Arr::get($default, 'meta.last_page'),
+                "links" => Arr::get($default, 'meta.links'),
+                "path" => Arr::get($default, 'meta.path'),
+                "perPage" => Arr::get($default, 'meta.per_page'),
+                "to" => Arr::get($default, 'meta.to'),
+                "total" => Arr::get($default, 'meta.total'),
+            ],
+        ];
+    }
+
+    /**
      * @param  \Illuminate\Support\Collection<int, string>  $relationshipChain
      */
-    public function recursivelyProcessIncludes(Collection $relationshipChain, Model $model): void
+    protected function recursivelyProcessIncludes(Collection $relationshipChain, Model $model): void
     {
         // We pull out the first relation in the "chain" of nested relationships
         $relationName = $relationshipChain->pull(0);
@@ -169,7 +173,7 @@ trait ManagesJsonApiSpec
             return;
         }
 
-        if ($model instanceof Model && ! $model->relationLoaded($relationName)) {
+        if (! $model->relationLoaded($relationName)) {
             return;
         }
 
