@@ -65,8 +65,10 @@ class RecipeDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(RecipeDetail $recipeDetail)
     {
-        //
+        $recipeDetail->delete();
+
+        return response()->json();
     }
 }
