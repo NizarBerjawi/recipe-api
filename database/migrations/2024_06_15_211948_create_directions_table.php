@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('order');
             $table->foreignUuid('recipe_uuid')->references('uuid')->on('recipes');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('directions', function (Blueprint $table) {

@@ -17,8 +17,9 @@ return new class extends Migration
             $table->integer('cook_time');
             $table->integer('servings');
             $table->foreignUuid('recipe_uuid')->references('uuid')->on('recipes');
-
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('user_uuid')->references('uuid')->on('users');
             $table->tinyText('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
