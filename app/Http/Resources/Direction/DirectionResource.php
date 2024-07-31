@@ -28,8 +28,8 @@ class DirectionResource extends JsonResource
             ],
             'relationships' => $this->collectRelationships(['recipe']),
             'links' => [
-                'self' => route('directions.show', $this->resource->getKey())
-            ]
+                'self' => route('directions.show', $this->resource->getKey()),
+            ],
         ];
     }
 }

@@ -30,8 +30,8 @@ class UserResource extends JsonResource
                 'recipes',
             ]),
             'links' => [
-                'self' => route('users.show', $this->resource->getKey())
-            ]
+                'self' => route('users.show', $this->resource->getKey()),
+            ],
         ];
     }
 }

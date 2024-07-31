@@ -15,6 +15,10 @@ trait HasType
      */
     public function getType(): string
     {
-        return Str::afterLast(static::class, '\\');
+        return Str::of(static::class)
+            ->afterLast('\\')
+            ->camel()
+            ->plural()
+            ->toString();
     }
 }
