@@ -30,8 +30,24 @@ class RecipeResource extends JsonResource
                 'user', 'recipeDetail', 'directions', 'ingredients',
             ]),
             'links' => [
-                'self' => route('recipes.show', $this->resource->getKey())
-            ]
+                'self' => route('recipes.show', $this->resource->getKey()),
+            ],
         ];
+    }
+
+    /**
+     * Get any additional data that should be returned with the resource array.
+     *
+     * @return array<string, \Illuminate\Support\Collection<(int|string), mixed>>
+     */
+    public function with(Request $request): array
+    {
+        return $this->collectIncludes([
+            'user',
+            'recipeDetail',
+            'directions',
+            'ingredients',
+            'ingredients.unit',
+        ]);
     }
 }
