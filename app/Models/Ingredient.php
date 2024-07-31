@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Models\Api\ApiModel;
+use App\Models\Scopes\UserRelationScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Blade;
 
+#[ScopedBy([UserRelationScope::class])]
 class Ingredient extends ApiModel
 {
     use HasFactory, HasUuids, SoftDeletes;
@@ -65,6 +69,14 @@ class Ingredient extends ApiModel
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    /**
+     * Get the user that owns the recipe direction.
+     */
+    public function user(): HasOneThrough
+    {
+        return $this->hasOneThrough(User::class, Recipe::class, 'uuid', 'uuid', 'recipe_uuid', 'user_uuid');
     }
 
     public function getDisplay()
