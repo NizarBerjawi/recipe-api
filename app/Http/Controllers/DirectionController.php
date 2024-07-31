@@ -7,6 +7,7 @@ use App\Http\Resources\Direction\DirectionResource;
 use App\Models\Direction;
 use App\Queries\DirectionQuery;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DirectionController extends Controller
 {
@@ -18,14 +19,6 @@ class DirectionController extends Controller
         return DirectionCollection::make(
             $query->builder()->jsonPaginate()
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -69,6 +62,6 @@ class DirectionController extends Controller
     {
         $direction->delete();
 
-        return response()->json();
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

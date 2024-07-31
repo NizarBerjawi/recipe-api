@@ -7,6 +7,7 @@ use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Queries\UserQuery;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -18,14 +19,6 @@ class UserController extends Controller
         return UserCollection::make(
             $query->builder()->jsonPaginate()
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -69,6 +62,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return response()->json();
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Resources\Ingredient\IngredientResource;
 use App\Models\Ingredient;
 use App\Queries\IngredientQuery;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IngredientController extends Controller
 {
@@ -18,14 +19,6 @@ class IngredientController extends Controller
         return IngredientCollection::make(
             $query->builder()->jsonPaginate()
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -69,6 +62,6 @@ class IngredientController extends Controller
     {
         $ingredient->delete();
 
-        return response()->json();
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }
