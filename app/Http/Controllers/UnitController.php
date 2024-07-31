@@ -7,6 +7,7 @@ use App\Http\Resources\Unit\UnitResource;
 use App\Models\Unit;
 use App\Queries\UnitQuery;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UnitController extends Controller
 {
@@ -18,14 +19,6 @@ class UnitController extends Controller
         return UnitCollection::make(
             $query->builder()->jsonPaginate()
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -65,8 +58,10 @@ class UnitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Unit $unit)
     {
-        //
+        $unit->delete();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

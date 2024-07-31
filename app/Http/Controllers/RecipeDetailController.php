@@ -7,6 +7,7 @@ use App\Http\Resources\RecipeDetail\RecipeDetailCollection;
 use App\Models\RecipeDetail;
 use App\Queries\RecipeDetailQuery;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class RecipeDetailController extends Controller
 {
@@ -18,14 +19,6 @@ class RecipeDetailController extends Controller
         return RecipeDetailCollection::make(
             $query->builder()->jsonPaginate()
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -65,8 +58,10 @@ class RecipeDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(RecipeDetail $recipeDetail)
     {
-        //
+        $recipeDetail->delete();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }
