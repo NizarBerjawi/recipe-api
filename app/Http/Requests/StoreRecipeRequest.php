@@ -34,7 +34,7 @@ class StoreRecipeRequest extends JsonApiRequest
             'data.attributes.name' => 'required|string|max:255',
             'data.attributes.description' => 'string|max:255',
 
-            'data.relationships' => 'array:user,recipeDetail,directions,ingredients',
+            'data.relationships' => 'array:user',
 
             'data.relationships.user.data.type' => ['string', Rule::in([$userRelation->getType()])],
             'data.relationships.user.data.id' => [

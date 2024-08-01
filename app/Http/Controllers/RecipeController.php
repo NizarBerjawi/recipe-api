@@ -56,12 +56,12 @@ class RecipeController extends Controller
             ->where('uuid', $recipe->getKey())
             ->first();
 
-        return response()
-            ->json(
-                RecipeResource::make($recipe),
-                Response::HTTP_CREATED,
-                ['Location' => route('recipes.show', $recipe->getKey())]
-            );
+        return RecipeResource::make($recipe)
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED)
+            ->withHeaders([
+                'Location' => route('recipes.show', $recipe->getKey())
+            ]);
     }
 
     /**
