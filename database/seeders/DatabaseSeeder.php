@@ -10,6 +10,7 @@ use App\Models\Unit;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +23,12 @@ class DatabaseSeeder extends Seeder
         $users = User::factory()->count(10)->create();
 
         foreach ($users as $user) {
+            $token = $user->createToken('access_token');
+            Log::notice('TOKENS', [
+                'userId' => $user->getKey(),
+                'token' => $token->plainTextToken,
+            ]);
+
             $recipes = Recipe::factory()
                 ->count(fake()->numberBetween(0, 20))
                 ->for($user)

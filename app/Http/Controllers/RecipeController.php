@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Resources\Recipe\RecipeCollection;
 use App\Http\Resources\Recipe\RecipeResource;
 use App\Models\Recipe;
 use App\Queries\RecipeQuery;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class RecipeController extends Controller
 {
@@ -21,19 +25,43 @@ class RecipeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRecipeRequest $request, RecipeQuery $query)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $recipe = $request->user()->recipes()->create(
+                $request->input('data.attributes')
+            );
+
+            if ($request->hasRelationship('user')) {
+                $data = $request->getRelationship('user');
+
+                Recipe::query()
+                    ->where('uuid', $recipe->getKey())
+                    ->where('user_uuid', $data->get('id'))
+                    ->update(['user_uuid' => $data->get('id')]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        $recipe = $query->builder()
+            ->where('uuid', $recipe->getKey())
+            ->first();
+
+        return response()
+            ->json(
+                RecipeResource::make($recipe),
+                Response::HTTP_CREATED,
+                ['Location' => route('recipes.show', $recipe->getKey())]
+            );
     }
 
     /**
@@ -44,14 +72,6 @@ class RecipeController extends Controller
         return RecipeResource::make(
             $query->builder()->first()
         );
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -69,6 +89,6 @@ class RecipeController extends Controller
     {
         $recipe->delete();
 
-        return response()->json();
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }
