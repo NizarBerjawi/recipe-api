@@ -56,21 +56,34 @@ class Unit extends ApiModel
         return $this->belongsToMany(Recipe::class, 'ingredients', 'unit_uuid', 'recipe_uuid');
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     /**
      * 
      */
     public function scopeByUser(Builder $query, User $user)
     {
-        $columns = (new Unit)
-            ->qualifyColumns(
-                DB::getSchemaBuilder()->getColumnListing('units')
-            );
-
-        return $query
-            ->select($columns)
-            ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
-            ->join('ingredients', 'ingredients.unit_uuid', '=', 'units.uuid')
-            ->join('recipes', 'recipes.uuid', '=', 'ingredients.recipe_uuid')
-            ->where('recipes.user_uuid', '=', $user->getKey());
+        return $query->where('units.user_uuid', $user->getKey());
     }
+
+    // /**
+    //  * 
+    //  */
+    // public function scopeByUser(Builder $query, User $user)
+    // {
+    //     $columns = (new Unit)
+    //         ->qualifyColumns(
+    //             DB::getSchemaBuilder()->getColumnListing('units')
+    //         );
+
+    //     return $query
+    //         ->select($columns)
+    //         ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
+    //         ->join('ingredients', 'ingredients.unit_uuid', '=', 'units.uuid')
+    //         ->join('recipes', 'recipes.uuid', '=', 'ingredients.recipe_uuid')
+    //         ->where('recipes.user_uuid', '=', $user->getKey());
+    // }
 }

@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
 
             $units = Unit::factory()
                 ->count(fake()->numberBetween(1, 20))
+                ->for($user)
                 ->create();
 
             $recipes->each(function (Recipe $recipe) use ($units) {
