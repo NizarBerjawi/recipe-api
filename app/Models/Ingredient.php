@@ -3,17 +3,18 @@
 namespace App\Models;
 
 use App\Models\Api\ApiModel;
-use App\Models\Scopes\UserRelationScope;
+use App\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\DB;
 
-#[ScopedBy([UserRelationScope::class])]
+#[ScopedBy([UserScope::class])]
 class Ingredient extends ApiModel
 {
     use HasFactory, HasUuids, SoftDeletes;
@@ -85,5 +86,22 @@ class Ingredient extends ApiModel
             'quantity' => $this->quantity,
             'name' => $this->name,
         ], true);
+    }
+
+    /**
+     * 
+     */
+    public function scopeByUser(Builder $query, User $user)
+    {
+        $columns = (new self)
+            ->qualifyColumns(
+                DB::getSchemaBuilder()->getColumnListing($this->getTable())
+            );
+
+        return $query
+            ->select($columns)
+            ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
+            ->join('recipes', 'recipes.uuid', '=', 'ingredients.recipe_uuid')
+            ->where('recipes.user_uuid', '=', $user->getKey());
     }
 }

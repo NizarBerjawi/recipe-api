@@ -4,11 +4,10 @@ namespace App\Models\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Scope;
 use Symfony\Component\HttpFoundation\Exception\UnexpectedValueException;
 
-class UserRelationScope implements Scope
+class UserScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -21,17 +20,13 @@ class UserRelationScope implements Scope
             return;
         }
 
-        if (! method_exists($model, 'user')) {
-            throw new UnexpectedValueException('Expected model to have a \'user\' relation');
-        }
-
-        if (! $model->user() instanceof Relation) {
-            throw new UnexpectedValueException('Expected \'user\' relation to be instance of: '.Relation::class);
+        if (! method_exists($model, 'scopeByUser')) {
+            throw new UnexpectedValueException('Expected model to have a local scope \'byUser\'.');
         }
 
         /** @var \App\Models\User|null */
         $user = request()->user();
 
-        $builder->whereHas('user', fn (Builder $query) => $query->where($user->getQualifiedKeyName(), $user->getKey()));
+        $builder->byUser($user);
     }
 }

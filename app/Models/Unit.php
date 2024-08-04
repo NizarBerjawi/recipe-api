@@ -3,10 +3,21 @@
 namespace App\Models;
 
 use App\Models\Api\ApiModel;
+use App\Models\Scopes\UserScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
+#[ScopedBy([UserScope::class])]
 class Unit extends ApiModel
 {
     use HasFactory, HasUuids, SoftDeletes;
@@ -34,4 +45,32 @@ class Unit extends ApiModel
         'code',
         'label',
     ];
+
+    public function ingredients(): HasMany
+    {
+        return $this->hasMany(Ingredient::class);
+    }
+
+    public function recipes(): BelongsToMany
+    {
+        return $this->belongsToMany(Recipe::class, 'ingredients', 'unit_uuid', 'recipe_uuid');
+    }
+
+    /**
+     * 
+     */
+    public function scopeByUser(Builder $query, User $user)
+    {
+        $columns = (new Unit)
+            ->qualifyColumns(
+                DB::getSchemaBuilder()->getColumnListing('units')
+            );
+
+        return $query
+            ->select($columns)
+            ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
+            ->join('ingredients', 'ingredients.unit_uuid', '=', 'units.uuid')
+            ->join('recipes', 'recipes.uuid', '=', 'ingredients.recipe_uuid')
+            ->where('recipes.user_uuid', '=', $user->getKey());
+    }
 }
