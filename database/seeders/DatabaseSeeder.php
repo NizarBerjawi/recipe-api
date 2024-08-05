@@ -8,7 +8,6 @@ use App\Models\Recipe;
 use App\Models\RecipeDetail;
 use App\Models\Unit;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 
@@ -21,8 +20,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([UnitSeeder::class]);
 
-        $users = User::factory()->count(10)->create();
-        
+        $users = User::factory()->count(50)->create();
+
         foreach ($users as $user) {
             $token = $user->createToken('access_token');
             Log::notice('TOKENS', [
@@ -35,28 +34,22 @@ class DatabaseSeeder extends Seeder
                 ->for($user)
                 ->has(RecipeDetail::factory())
                 ->has(
-                    Direction::factory()
-                        ->count(fake()->numberBetween(5, 15))
+                    Direction::factory()->count(fake()->numberBetween(5, 15))
                 )
                 ->create();
 
-            $recipes->each(function (Recipe $recipe) {
-                // Prepare the ingredients for each Recipe
+            $recipes->each(function (Recipe $recipe) use ($user) {
                 $ingredients = Ingredient::factory()
                     ->count(fake()->numberBetween(0, 15))
-                    ->make();
+                    ->for($user)
+                    ->create();
 
-                // Give every ingredients a unit and link to recipe
                 $ingredients->each(
-                    function (Ingredient $ingredient) use ($recipe) {
-                        $ingredient->unit()->associate(
-                            Unit::inRandomOrder()->limit(1)->first()
-                        );
-                        
-                        $ingredient->recipe()->associate($recipe);
-
-                        $ingredient->save();
-                    }
+                    fn (Ingredient $ingredient) =>
+                    $recipe->ingredients()->attach($ingredient, [
+                        'unit_uuid' => Unit::inRandomOrder()->limit(1)->first()->getKey(),
+                        'quantity' => fake()->randomFloat()
+                    ])
                 );
             });
         }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Blade;
@@ -59,25 +60,25 @@ class Ingredient extends ApiModel
     /**
      * Get the recipe associated with this ingredient.
      */
-    public function recipe(): BelongsTo
+    public function recipes(): BelongsToMany
     {
-        return $this->belongsTo(Recipe::class);
+        return $this->belongsToMany(Recipe::class)->distinct('recipe_uuid');
     }
 
     /**
      * Get the unit associated with this ingredient.
      */
-    public function unit(): BelongsTo
+    public function units(): BelongsToMany
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsToMany(Unit::class, 'ingredient_recipe');
     }
 
     /**
      * Get the user that owns the recipe direction.
      */
-    public function user(): HasOneThrough
+    public function user(): BelongsTo
     {
-        return $this->hasOneThrough(User::class, Recipe::class, 'uuid', 'uuid', 'recipe_uuid', 'user_uuid');
+        return $this->belongsTo(User::class);
     }
 
     public function getDisplay()

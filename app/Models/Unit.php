@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
-#[ScopedBy([UserScope::class])]
 class Unit extends ApiModel
 {
     use HasFactory, HasUuids, SoftDeletes;
@@ -44,37 +43,28 @@ class Unit extends ApiModel
         'type',
     ];
 
-    public function ingredients(): HasMany
+    public function ingredients(): BelongsToMany
     {
-        return $this->hasMany(Ingredient::class);
+        return $this->belongsToMany(Ingredient::class, 'ingredient_recipe')->distinct('ingredient_uuid');
     }
 
     public function recipes(): BelongsToMany
     {
-        return $this->belongsToMany(Recipe::class, 'ingredients', 'unit_uuid', 'recipe_uuid');
+        return $this->belongsToMany(Recipe::class, 'ingredient_recipe')->distinct('recipe_uuid');
     }
 
-    public function user(): BelongsTo
+    public function scopeByUser(Builder $query, User $user)
     {
-        return $this->belongsTo(User::class);
+        $columns = (new Unit)
+            ->qualifyColumns(
+                DB::getSchemaBuilder()->getColumnListing('units')
+            );
+
+        return $query
+            ->select($columns)
+            ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
+            ->join('ingredient_recipe', 'ingredient_recipe.unit_uuid', '=', 'units.uuid')
+            ->join('recipes', 'recipes.uuid', '=', 'ingredient_recipe.recipe_uuid')
+            ->where('recipes.user_uuid', '=', $user->getKey());
     }
-
-
-    // /**
-    //  *
-    //  */
-    // public function scopeByUser(Builder $query, User $user)
-    // {
-    //     $columns = (new Unit)
-    //         ->qualifyColumns(
-    //             DB::getSchemaBuilder()->getColumnListing('units')
-    //         );
-
-    //     return $query
-    //         ->select($columns)
-    //         ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
-    //         ->join('ingredients', 'ingredients.unit_uuid', '=', 'units.uuid')
-    //         ->join('recipes', 'recipes.uuid', '=', 'ingredients.recipe_uuid')
-    //         ->where('recipes.user_uuid', '=', $user->getKey());
-    // }
 }
