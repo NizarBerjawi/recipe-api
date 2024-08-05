@@ -27,7 +27,6 @@ Route::controller(RecipeDetailController::class)->group(function () {
     Route::post('/recipeDetails', 'store')->name('recipeDetails.store');
     Route::get('/recipeDetails/{recipeDetail}', 'show')->name('recipeDetails.show');
     Route::delete('/recipeDetails/{recipeDetail}', 'destroy')->name('recipeDetails.destroy');
-
 });
 
 Route::controller(DirectionController::class)->group(function () {
@@ -42,4 +41,9 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/users', 'store')->name('users.store');
     Route::get('/users/{user}', 'show')->name('users.show');
     Route::delete('/users/{user}', 'destroy')->name('users.destroy');
+});
+
+Route::controller(UnitController::class)->group(function () {
+    Route::get('/units', 'index')->name('units.index');
+    Route::get('/units/{recipeDetail}', 'show')->name('units.show');
 });

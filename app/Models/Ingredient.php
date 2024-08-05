@@ -62,7 +62,7 @@ class Ingredient extends ApiModel
      */
     public function recipes(): BelongsToMany
     {
-        return $this->belongsToMany(Recipe::class)->distinct('recipe_uuid');
+        return $this->belongsToMany(Recipe::class);
     }
 
     /**
@@ -89,17 +89,11 @@ class Ingredient extends ApiModel
         ], true);
     }
 
-    public function scopeByUser(Builder $query, User $user)
+    /**
+     * Get the Ingredients created by a specific User
+     */
+    public function scopeByUser(Builder $query, User $user): Builder
     {
-        $columns = (new self)
-            ->qualifyColumns(
-                DB::getSchemaBuilder()->getColumnListing($this->getTable())
-            );
-
-        return $query
-            ->select($columns)
-            ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
-            ->join('recipes', 'recipes.uuid', '=', 'ingredients.recipe_uuid')
-            ->where('recipes.user_uuid', '=', $user->getKey());
+        return $query->where('user_uuid', $user->getKey());
     }
 }

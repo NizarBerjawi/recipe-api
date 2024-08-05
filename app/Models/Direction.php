@@ -70,7 +70,10 @@ class Direction extends ApiModel
         return $this->hasOneThrough(User::class, Recipe::class, 'uuid', 'uuid', 'recipe_uuid', 'user_uuid');
     }
 
-    public function scopeByUser(Builder $query, User $user)
+    /**
+     * Get the Directions created by a specific User
+     */
+    public function scopeByUser(Builder $query, User $user): Builder
     {
         $columns = (new self)
             ->qualifyColumns(

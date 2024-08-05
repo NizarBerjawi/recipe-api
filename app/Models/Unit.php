@@ -45,14 +45,17 @@ class Unit extends ApiModel
 
     public function ingredients(): BelongsToMany
     {
-        return $this->belongsToMany(Ingredient::class, 'ingredient_recipe')->distinct('ingredient_uuid');
+        return $this->belongsToMany(Ingredient::class, 'ingredient_recipe');
     }
 
     public function recipes(): BelongsToMany
     {
-        return $this->belongsToMany(Recipe::class, 'ingredient_recipe')->distinct('recipe_uuid');
+        return $this->belongsToMany(Recipe::class, 'ingredient_recipe');
     }
 
+    /**
+     * Get the Units used by a specific user
+     */
     public function scopeByUser(Builder $query, User $user)
     {
         $columns = (new Unit)

@@ -38,13 +38,17 @@ class DatabaseSeeder extends Seeder
                 )
                 ->create();
 
-            $recipes->each(function (Recipe $recipe) use ($user) {
-                $ingredients = Ingredient::factory()
-                    ->count(fake()->numberBetween(0, 15))
-                    ->for($user)
-                    ->create();
+            $ingredients = Ingredient::factory()
+                ->count(fake()->numberBetween(1, 500))
+                ->for($user)
+                ->create();
 
-                $ingredients->each(
+            $recipes->each(function (Recipe $recipe) use ($ingredients) {
+                $recipeIngredients = $ingredients->random(
+                    fake()->numberBetween(1, $ingredients->count())
+                );
+
+                $recipeIngredients->each(
                     fn (Ingredient $ingredient) =>
                     $recipe->ingredients()->attach($ingredient, [
                         'unit_uuid' => Unit::inRandomOrder()->limit(1)->first()->getKey(),

@@ -59,7 +59,7 @@ class RecipeDetail extends ApiModel
     }
 
     /**
-     * Get the recpie that owns the recipe detail.
+     * Get the recipe that owns the recipe detail.
      */
     public function recipe(): BelongsTo
     {
@@ -74,6 +74,9 @@ class RecipeDetail extends ApiModel
         return $this->hasOneThrough(User::class, Recipe::class, 'uuid', 'uuid', 'recipe_uuid', 'user_uuid');
     }
 
+    /**
+     * Get the Recipe Details created by a specific User
+     */
     public function scopeByUser(Builder $query, User $user)
     {
         $columns = (new self)

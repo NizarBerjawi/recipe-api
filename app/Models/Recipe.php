@@ -72,18 +72,21 @@ class Recipe extends ApiModel
      */
     public function ingredients(): BelongsToMany
     {
-        return $this->belongsToMany(Ingredient::class)->distinct('ingredient_uuid');
+        return $this->belongsToMany(Ingredient::class);
     }
 
     /**
-     * Get the ingredients associated with this recipe.
+     * Get the units used in this recipe.
      */
     public function units(): BelongsToMany
     {
-        return $this->belongsToMany(Unit::class, 'ingredient_recipe')->distinct('unit_uuid');
+        return $this->belongsToMany(Unit::class, 'ingredient_recipe');
     }
 
-    public function scopeByUser(Builder $query, User $user)
+    /**
+     * Get the Ingredients created by a specific User
+     */
+    public function scopeByUser(Builder $query, User $user): Builder
     {
         return $query->where('recipes.user_uuid', $user->getKey());
     }
