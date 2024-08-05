@@ -37,13 +37,6 @@ Route::controller(DirectionController::class)->group(function () {
     Route::delete('/directions/{direction}', 'destroy')->name('directions.destroy');
 });
 
-Route::controller(UnitController::class)->group(function () {
-    Route::get('/units', 'index')->name('units.index');
-    Route::post('/units', 'store')->name('units.store');
-    Route::get('/units/{unit}', 'show')->name('units.show');
-    Route::delete('/units/{unit}', 'destroy')->name('units.destroy');
-});
-
 Route::controller(UserController::class)->group(function () {
     Route::get('/users', 'index')->name('users.index');
     Route::post('/users', 'store')->name('users.store');

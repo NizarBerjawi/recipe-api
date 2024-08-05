@@ -11,9 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -44,6 +41,7 @@ class Unit extends ApiModel
     protected $fillable = [
         'code',
         'label',
+        'type',
     ];
 
     public function ingredients(): HasMany
@@ -61,16 +59,9 @@ class Unit extends ApiModel
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * 
-     */
-    public function scopeByUser(Builder $query, User $user)
-    {
-        return $query->where('units.user_uuid', $user->getKey());
-    }
 
     // /**
-    //  * 
+    //  *
     //  */
     // public function scopeByUser(Builder $query, User $user)
     // {

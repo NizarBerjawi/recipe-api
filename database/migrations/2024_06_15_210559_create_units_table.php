@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->string('code');
             $table->string('label');
-            $table->foreignUuid('user_uuid')->references('uuid')->on('users');
+            $table->string('type');
             $table->timestamps();
             $table->softDeletes();
         });

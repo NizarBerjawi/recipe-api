@@ -60,7 +60,7 @@ class RecipeController extends Controller
             ->response()
             ->setStatusCode(Response::HTTP_CREATED)
             ->withHeaders([
-                'Location' => route('recipes.show', $recipe->getKey())
+                'Location' => route('recipes.show', $recipe->getKey()),
             ]);
     }
 

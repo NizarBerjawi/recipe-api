@@ -88,9 +88,6 @@ class Ingredient extends ApiModel
         ], true);
     }
 
-    /**
-     * 
-     */
     public function scopeByUser(Builder $query, User $user)
     {
         $columns = (new self)

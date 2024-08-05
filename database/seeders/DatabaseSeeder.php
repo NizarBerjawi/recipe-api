@@ -19,8 +19,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::factory()->count(10)->create();
+        $this->call([UnitSeeder::class]);
 
+        $users = User::factory()->count(10)->create();
+        
         foreach ($users as $user) {
             $token = $user->createToken('access_token');
             Log::notice('TOKENS', [
@@ -38,12 +40,7 @@ class DatabaseSeeder extends Seeder
                 )
                 ->create();
 
-            $units = Unit::factory()
-                ->count(fake()->numberBetween(1, 20))
-                ->for($user)
-                ->create();
-
-            $recipes->each(function (Recipe $recipe) use ($units) {
+            $recipes->each(function (Recipe $recipe) {
                 // Prepare the ingredients for each Recipe
                 $ingredients = Ingredient::factory()
                     ->count(fake()->numberBetween(0, 15))
@@ -51,8 +48,11 @@ class DatabaseSeeder extends Seeder
 
                 // Give every ingredients a unit and link to recipe
                 $ingredients->each(
-                    function (Ingredient $ingredient) use ($recipe, $units) {
-                        $ingredient->unit()->associate($units->random());
+                    function (Ingredient $ingredient) use ($recipe) {
+                        $ingredient->unit()->associate(
+                            Unit::inRandomOrder()->limit(1)->first()
+                        );
+                        
                         $ingredient->recipe()->associate($recipe);
 
                         $ingredient->save();
