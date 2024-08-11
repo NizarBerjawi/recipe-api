@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreIngredientRequest;
 use App\Http\Resources\Ingredient\IngredientCollection;
 use App\Http\Resources\Ingredient\IngredientResource;
 use App\Models\Ingredient;
 use App\Queries\IngredientQuery;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class IngredientController extends Controller
@@ -24,9 +27,44 @@ class IngredientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreIngredientRequest $request, IngredientQuery $query)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $ingredient = new Ingredient($request->input('data.attributes'));
+
+            if ($request->hasRelationship('user')) {
+                $data = $request->getRelationship('user');
+
+                $ingredient->user()->associate($data->get('id'));
+            }
+
+            if ($request->hasRelationship('recipe')) {
+                $data = $request->getRelationship('recipe');
+
+                $ingredient->recipes()->attach($data->get('id'));
+            }
+
+            $ingredient->save();
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        $ingredient = $query->builder()
+            ->where('ingredient.uuid', $ingredient->getKey())
+            ->first();
+
+        return IngredientResource::make($ingredient)
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED)
+            ->withHeaders([
+                'Location' => route('ingredients.show', $ingredient->getKey()),
+            ]);
     }
 
     /**

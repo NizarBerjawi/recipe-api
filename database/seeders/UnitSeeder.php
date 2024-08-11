@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Unit;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class UnitSeeder extends Seeder
 {
@@ -44,6 +43,6 @@ class UnitSeeder extends Seeder
             ['code' => '°F', 'label' => 'degree Farenheit', 'type' => 'imperial'],
         ]);
 
-        $units->each(fn(array $data) => Unit::create($data));
+        $units->each(fn (array $data) => Unit::create($data));
     }
 }

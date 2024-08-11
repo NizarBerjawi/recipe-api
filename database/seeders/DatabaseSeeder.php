@@ -49,10 +49,9 @@ class DatabaseSeeder extends Seeder
                 );
 
                 $recipeIngredients->each(
-                    fn (Ingredient $ingredient) =>
-                    $recipe->ingredients()->attach($ingredient, [
+                    fn (Ingredient $ingredient) => $recipe->ingredients()->attach($ingredient, [
                         'unit_uuid' => Unit::inRandomOrder()->limit(1)->first()->getKey(),
-                        'quantity' => fake()->randomFloat()
+                        'quantity' => fake()->randomFloat(),
                     ])
                 );
             });

@@ -24,18 +24,18 @@ class StoreDirectionRequest extends JsonApiRequest
 
         return [
             'data' => 'required',
-            'data.type' => 'required|string|in:' . $resource->getType(),
+            'data.type' => 'required|string|in:'.$resource->getType(),
             'data.attributes' => 'required',
             'data.attributes.direction' => 'required|string|max:255',
             'data.attributes.order' => 'required|integer',
 
             'data.relationships' => 'array:recipe',
             'data.relationships.recipe' => 'required',
-            'data.relationships.recipe.data.type' => 'required|in:' . $recipeRelation->getType(),
+            'data.relationships.recipe.data.type' => 'required|string|in:'.$recipeRelation->getType(),
             'data.relationships.recipe.data.id' => [
                 'required',
                 'uuid',
-                Rule::exists($recipeRelation->getTable(),$recipeRelation->getKeyName())
+                Rule::exists($recipeRelation->getTable(), $recipeRelation->getKeyName())
                     ->where('user_uuid', $this->user()->getKey()),
             ],
         ];
@@ -48,13 +48,13 @@ class StoreDirectionRequest extends JsonApiRequest
     {
         return [
             function (Validator $validator) {
-                if (!$this->validOrder()) {
+                if (! $this->validOrder()) {
                     $validator->errors()->add(
                         'data.attributes.order',
                         'The data.attributes.order has already been taken....'
                     );
                 }
-            }
+            },
         ];
     }
 
