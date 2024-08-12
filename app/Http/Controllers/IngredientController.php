@@ -48,23 +48,23 @@ class IngredientController extends Controller
 
             $ingredient->save();
 
+            $ingredient = $query->builder()
+                ->where('ingredient.uuid', $ingredient->getKey())
+                ->first();
+
+            return IngredientResource::make($ingredient)
+                ->response()
+                ->setStatusCode(Response::HTTP_CREATED)
+                ->withHeaders([
+                    'Location' => route('ingredients.show', $ingredient->getKey()),
+                ]);
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
 
             throw $e;
         }
-
-        $ingredient = $query->builder()
-            ->where('ingredient.uuid', $ingredient->getKey())
-            ->first();
-
-        return IngredientResource::make($ingredient)
-            ->response()
-            ->setStatusCode(Response::HTTP_CREATED)
-            ->withHeaders([
-                'Location' => route('ingredients.show', $ingredient->getKey()),
-            ]);
     }
 
     /**

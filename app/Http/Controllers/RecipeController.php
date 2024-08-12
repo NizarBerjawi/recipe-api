@@ -32,19 +32,17 @@ class RecipeController extends Controller
         DB::beginTransaction();
 
         try {
-            $recipe = $request->user()->recipes()->create(
-                $request->input('data.attributes')
-            );
+            $recipe = new Recipe($request->input('data.attributes'));
+            $recipe->user()->associate($request->user()->getKey());
 
             if ($request->hasRelationship('user')) {
                 $data = $request->getRelationship('user');
 
-                Recipe::query()
-                    ->where('uuid', $recipe->getKey())
-                    ->where('user_uuid', $data->get('id'))
-                    ->update(['user_uuid' => $data->get('id')]);
+                $recipe->user()->associate($data->get('id'));
             }
 
+            $recipe->save();
+            
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

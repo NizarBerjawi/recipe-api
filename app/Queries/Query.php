@@ -52,6 +52,16 @@ abstract class Query
     }
 
     /**
+     * 
+     */
+    public function validate(): bool
+    {
+        $this->builder();
+
+        return true;
+    }
+
+    /**
      * Return the "subject" for this query
      */
     public function subject()

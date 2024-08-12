@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Concerns\ForResource;
 use App\Models\Ingredient;
+use App\Queries\IngredientQuery;
 use Illuminate\Validation\Rule;
 
 #[ForResource(Ingredient::class)]
@@ -17,6 +18,10 @@ class StoreIngredientRequest extends JsonApiRequest
     public function rules(): array
     {
         $resource = $this->resource();
+
+        $query = new IngredientQuery();
+
+        $query->validate();
 
         $userRelation = $resource->user()->getRelated();
         $recipeRelation = $resource->recipes()->getRelated();
@@ -34,8 +39,8 @@ class StoreIngredientRequest extends JsonApiRequest
             'data.relationships.user.data.id' => [
                 'uuid',
                 Rule::exists($userRelation->getTable(), $userRelation->getKeyName())
-                    ->where('user_uuid', $this->user()->getKey())
-                    ->where('user_uuid', $this->input('data.relationships.user.data.id')),
+                    ->where($userRelation->getKeyName(), $this->user()->getKey())
+                    ->where($userRelation->getKeyName(), $this->input('data.relationships.user.data.id')),
             ],
 
             'data.relationships.recipe.data.type' => 'required|string|in:'.$recipeRelation->getType(),
