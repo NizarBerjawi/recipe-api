@@ -2,7 +2,10 @@
 
 namespace App\Queries\Concerns;
 
-class SubjectOf
+use Attribute;
+
+#[Attribute(Attribute::TARGET_CLASS)]
+class QueryFor
 {
     public string $subject;
 

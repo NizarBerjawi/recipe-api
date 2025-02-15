@@ -6,7 +6,7 @@ use App\Queries\Concerns\AddsFieldsToQuery;
 use Spatie\QueryBuilder\QueryBuilder as SpatieQueryBuilder;
 
 /**
- * @mixin EloquentBuilder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class QueryBuilder extends SpatieQueryBuilder
 {

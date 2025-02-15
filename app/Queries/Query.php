@@ -2,18 +2,13 @@
 
 namespace App\Queries;
 
-use App\Queries\Concerns\HasFields;
-use App\Queries\Concerns\HasFilters;
-use App\Queries\Concerns\HasIncludes;
-use App\Queries\Concerns\HasSorts;
-use App\Queries\Concerns\SubjectOf;
+use App\Models\Api\ApiModel;
+use App\Queries\Concerns\QueryFor;
 use Illuminate\Support\Arr;
 use ReflectionClass;
 
 abstract class Query
 {
-    use HasFields, HasFilters, HasIncludes, HasSorts;
-
     /**
      * An instance of the query builder.
      *
@@ -22,33 +17,18 @@ abstract class Query
     protected $builder;
 
     /**
-     * Instantiate the Query.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->builder = QueryBuilder::for($this->subject());
-
-        $this->includes = $this->includes();
-        $this->sorts = $this->sorts();
-        $this->filters = $this->filters();
-        $this->fields = $this->fields();
-    }
-
-    /**
      * The query builder used to apply the filters.
      */
     public function builder(): QueryBuilder
     {
-        $class = $this->subject();
-
-        return $this->builder
-            ->defaultSort((new $class)->getKeyName())
-            ->allowedSorts($this->sorts)
-            ->allowedFields($this->fields)
-            ->allowedIncludes($this->includes)
-            ->allowedFilters($this->filters);
+        $model = $this->subject();
+        
+        return QueryBuilder::for($model::class)
+            ->defaultSort($model->getKeyName())
+            ->allowedSorts($this->sorts())
+            ->allowedFields($this->fields())
+            ->allowedIncludes($this->includes())
+            ->allowedFilters($this->filters());
     }
 
     /**
@@ -64,11 +44,11 @@ abstract class Query
     /**
      * Return the "subject" for this query
      */
-    public function subject()
+    public function subject(): ApiModel
     {
         $reflectionClass = new ReflectionClass(static::class);
 
-        $attributes = $reflectionClass->getAttributes(SubjectOf::class);
+        $attributes = $reflectionClass->getAttributes(QueryFor::class);
 
         /** @var \ReflectionAttribute */
         $subject = Arr::first($attributes);
@@ -76,6 +56,34 @@ abstract class Query
         /** @var string */
         $modelClass = Arr::first($subject->getArguments());
 
-        return $modelClass;
+        return new $modelClass;
     }
+
+    /**
+     * The "fields" that can be selected to add to the query.
+     *
+     * @return array<int, string>
+     */
+    abstract public function fields(): array;
+
+    /**
+     * The attributes we can use to filter.
+     *
+     * @return array<int, \Spatie\QueryBuilder\AllowedFilter|string>
+     */
+    abstract public function filters(): array;
+
+    /**
+     * The "relationships" that can be included in a response for this model.
+     *
+     * @return array<int, \Illuminate\Support\Collection<int, \Spatie\QueryBuilder\AllowedInclude>>
+     */
+    abstract public function includes(): array;
+
+    /**
+     * The "relationships" that can be included in a response for this model.
+     *
+     * @return array<int, \Spatie\QueryBuilder\AllowedSort>
+     */
+    abstract public function sorts(): array;
 }
