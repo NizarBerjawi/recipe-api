@@ -3,12 +3,12 @@
 namespace App\Queries;
 
 use App\Models\RecipeDetail;
-use App\Queries\Concerns\SubjectOf;
+use App\Queries\Concerns\QueryFor;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\AllowedSort;
 
-#[SubjectOf(RecipeDetail::class)]
+#[QueryFor(RecipeDetail::class)]
 class RecipeDetailQuery extends Query
 {
     /**

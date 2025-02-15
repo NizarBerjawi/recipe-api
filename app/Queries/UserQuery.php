@@ -3,12 +3,12 @@
 namespace App\Queries;
 
 use App\Models\User;
-use App\Queries\Concerns\SubjectOf;
+use App\Queries\Concerns\QueryFor;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\AllowedSort;
 
-#[SubjectOf(User::class)]
+#[QueryFor(User::class)]
 class UserQuery extends Query
 {
     /**

@@ -3,11 +3,11 @@
 namespace App\Queries;
 
 use App\Models\Unit;
-use App\Queries\Concerns\SubjectOf;
+use App\Queries\Concerns\QueryFor;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 
-#[SubjectOf(Unit::class)]
+#[QueryFor(Unit::class)]
 class UnitQuery extends Query
 {
     /**
