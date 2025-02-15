@@ -79,15 +79,6 @@ class RecipeDetail extends ApiModel
      */
     public function scopeByUser(Builder $query, User $user)
     {
-        $columns = (new self)
-            ->qualifyColumns(
-                DB::getSchemaBuilder()->getColumnListing($this->getTable())
-            );
-
-        return $query
-            ->select($columns)
-            ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
-            ->join('recipes', 'recipes.uuid', '=', 'recipe_details.recipe_uuid')
-            ->where('recipes.user_uuid', '=', $user->getKey());
+        return $this->whereHas('user', fn($query) => $query->where('users.uuid', $user->getKey()));
     }
 }

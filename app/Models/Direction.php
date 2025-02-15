@@ -75,15 +75,6 @@ class Direction extends ApiModel
      */
     public function scopeByUser(Builder $query, User $user): Builder
     {
-        $columns = (new self)
-            ->qualifyColumns(
-                DB::getSchemaBuilder()->getColumnListing($this->getTable())
-            );
-
-        return $query
-            ->select($columns)
-            ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
-            ->join('recipes', 'recipes.uuid', '=', 'directions.recipe_uuid')
-            ->where('recipes.user_uuid', '=', $user->getKey());
+        return $this->whereHas('user', fn($query) => $query->where('users.uuid', $user->getKey()));
     }
 }

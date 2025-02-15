@@ -48,22 +48,4 @@ class Unit extends ApiModel
     {
         return $this->belongsToMany(Recipe::class, 'ingredient_recipe');
     }
-
-    /**
-     * Get the Units used by a specific user
-     */
-    public function scopeByUser(Builder $query, User $user)
-    {
-        $columns = (new Unit)
-            ->qualifyColumns(
-                DB::getSchemaBuilder()->getColumnListing('units')
-            );
-
-        return $query
-            ->select($columns)
-            ->distinct(sprintf('%s.%s', $this->getTable(), $this->getKeyName()))
-            ->join('ingredient_recipe', 'ingredient_recipe.unit_uuid', '=', 'units.uuid')
-            ->join('recipes', 'recipes.uuid', '=', 'ingredient_recipe.recipe_uuid')
-            ->where('recipes.user_uuid', '=', $user->getKey());
-    }
 }

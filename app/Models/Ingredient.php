@@ -92,6 +92,6 @@ class Ingredient extends ApiModel
      */
     public function scopeByUser(Builder $query, User $user): Builder
     {
-        return $query->where('user_uuid', $user->getKey());
+        return $query->where('ingredients.user_uuid', $user->getKey());
     }
 }
