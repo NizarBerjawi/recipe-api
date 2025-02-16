@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 #[ScopedBy([UserScope::class])]
 class RecipeDetail extends ApiModel
@@ -79,6 +78,6 @@ class RecipeDetail extends ApiModel
      */
     public function scopeByUser(Builder $query, User $user)
     {
-        return $this->whereHas('user', fn($query) => $query->where('users.uuid', $user->getKey()));
+        return $this->whereHas('user', fn ($query) => $query->where('users.uuid', $user->getKey()));
     }
 }

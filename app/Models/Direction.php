@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 #[ScopedBy([UserScope::class])]
 class Direction extends ApiModel
@@ -75,6 +74,6 @@ class Direction extends ApiModel
      */
     public function scopeByUser(Builder $query, User $user): Builder
     {
-        return $this->whereHas('user', fn($query) => $query->where('users.uuid', $user->getKey()));
+        return $this->whereHas('user', fn ($query) => $query->where('users.uuid', $user->getKey()));
     }
 }

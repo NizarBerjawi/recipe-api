@@ -2,8 +2,8 @@
 
 namespace App\Queries;
 
-use App\Models\Api\ApiModel;
 use App\Queries\Concerns\QueryFor;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use ReflectionClass;
 
@@ -22,7 +22,7 @@ abstract class Query
     public function builder(): QueryBuilder
     {
         $model = $this->subject();
-        
+
         return QueryBuilder::for($model::class)
             ->defaultSort($model->getKeyName())
             ->allowedSorts($this->sorts())
@@ -32,19 +32,9 @@ abstract class Query
     }
 
     /**
-     * 
-     */
-    public function validate(): bool
-    {
-        $this->builder();
-
-        return true;
-    }
-
-    /**
      * Return the "subject" for this query
      */
-    public function subject(): ApiModel
+    public function subject(): Model
     {
         $reflectionClass = new ReflectionClass(static::class);
 
