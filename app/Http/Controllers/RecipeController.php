@@ -36,9 +36,11 @@ class RecipeController extends Controller
         DB::beginTransaction();
 
         try {
-            $recipe = new Recipe($request->input('data.attributes'));
-            $recipe->user()->associate($request->user()->getKey());
-            $recipe->save();
+            $recipe = Recipe::query()
+                ->create([
+                    ...$request->input('data.attributes'),
+                    'user_uuid' => $request->user()->getKey(),
+                ]);
 
             if ($request->hasRelationship('recipeDetail')) {
                 $data = $request->getRelationship('recipeDetail');

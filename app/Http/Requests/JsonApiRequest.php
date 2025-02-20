@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Concerns\ForResource;
+use App\Rules\ValidRelationshipId;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 use ReflectionClass;
 
 class JsonApiRequest extends FormRequest
@@ -67,5 +69,41 @@ class JsonApiRequest extends FormRequest
         }
 
         return $data->unique('id');
+    }
+
+    /**
+     * Generate rules for all the possible relationships
+     *
+     * @return array{data.relationships: string}
+     */
+    public function relationshipRules(Collection $relations = []): array
+    {
+        $defaultRule = [
+            'data.relationships' => 'array:'.implode(',', $relations->all()),
+        ];
+
+        $otherRules = $relations->map(function (string $requiredRelation) {
+            /** @var \Illuminate\Database\Eloquent\Relations\Relation */
+            $relation = $this->resource()->$requiredRelation();
+
+            /** @var \Illuminate\Database\Eloquent\Model */
+            $relationModel = $relation->getRelated();
+
+            $typeRule = ['string', Rule::in([$relationModel->getType()])];
+            $idRules = ['uuid', new ValidRelationshipId($this->user(), $relationModel)];
+
+            return match (true) {
+                $relation instanceof BelongsTo => [
+                    "data.relationships.$requiredRelation.data.type" => $typeRule,
+                    "data.relationships.$requiredRelation.data.id" => $idRules,
+                ],
+                $relation instanceof HasMany => [
+                    "data.relationships.$requiredRelation.*.data.type" => $typeRule,
+                    "data.relationships.$requiredRelation.*.data.id" => $idRules,
+                ]
+            };
+        });
+
+        return $defaultRule + $otherRules;
     }
 }

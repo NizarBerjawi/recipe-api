@@ -19,7 +19,7 @@ class StoreIngredientRequest extends JsonApiRequest
     {
         $resource = $this->resource();
 
-        $query = new IngredientQuery();
+        $query = new IngredientQuery;
 
         $query->validate();
 

@@ -18,9 +18,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([UnitSeeder::class]);
+        $maxUsers = env(key: 'MAX_USERS', default: fake()->numberBetween(5, int2: 50));
+        $maxRecipes = env(key: 'MAX_RECIPES', default: fake()->numberBetween(0, int2: 20));
+        $maxDirections = env(key: 'MAX_DIRECTIONS', default: fake()->numberBetween(5, 15));
+        $maxIngredients = env(key: 'MAX_INGREDIENTS', default: fake()->numberBetween(1, 500));
 
-        $users = User::factory()->count(50)->create();
+        $this->call(class: [UnitSeeder::class]);
+
+        $users = User::factory()->count($maxUsers)->create();
 
         foreach ($users as $user) {
             $token = $user->createToken('access_token');
@@ -30,16 +35,16 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $recipes = Recipe::factory()
-                ->count(fake()->numberBetween(0, 20))
+                ->count($maxRecipes)
                 ->for($user)
                 ->has(RecipeDetail::factory())
                 ->has(
-                    Direction::factory()->count(fake()->numberBetween(5, 15))
+                    Direction::factory()->count($maxDirections)
                 )
                 ->create();
 
             $ingredients = Ingredient::factory()
-                ->count(fake()->numberBetween(1, 500))
+                ->count($maxIngredients)
                 ->for($user)
                 ->create();
 

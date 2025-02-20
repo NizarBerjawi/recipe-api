@@ -13,7 +13,17 @@ trait AddsFieldsToQuery
     {
         $modelTableName = $this->getModel()->getTable();
 
-        $fields = $this->request->fields();
+        $fields = $this->request->fields()
+            ->mapWithKeys(
+                fn(array $items, string $key) => [
+                    Str::snake($key) => array_unique(
+                        array_merge(
+                            [$this->getModel()->getKeyName()],
+                            Arr::map($items, fn(string $item) => Str::snake($item))
+                        )
+                    ),
+                ]
+            );
 
         $modelFields = $fields->has($modelTableName) ? $fields->get($modelTableName) : $fields->get('_');
 
@@ -26,25 +36,26 @@ trait AddsFieldsToQuery
         $this->select($prependedFields);
     }
 
-    public function getRequestedFieldsForRelatedTable(string $relation): array
+    public function getRequestedFieldsForRelatedTable(string $relation, ?string $tableName = null): array
     {
         $tableOrRelation = config('query-builder.convert_relation_names_to_snake_case_plural', true)
             ? Str::plural(Str::snake($relation))
             : $relation;
 
         $fields = $this->request->fields()
-            ->mapWithKeys(fn ($fields, $table) => [
-                $table => config('query-builder.allow_selecting_fields_as_camel_case', false)
-                    ? Arr::map($fields, fn ($field) => Str::snake($field))
-                    : $fields,
-            ]
+            ->mapWithKeys(
+                fn($fields, $table) => [
+                    $table => config('query-builder.allow_selecting_fields_as_camel_case', false)
+                        ? Arr::map($fields, fn($field) => Str::snake($field))
+                        : $fields,
+                ]
             )->get($tableOrRelation);
 
-        if (! $fields) {
+        if (!$fields) {
             return [];
         }
 
-        if (! $this->allowedFields instanceof Collection) {
+        if (!$this->allowedFields instanceof Collection) {
             // We have requested fields but no allowed fields (yet?)
 
             throw new UnknownIncludedFieldsQuery($fields);
@@ -55,7 +66,7 @@ trait AddsFieldsToQuery
 
     protected function prependField(string $field, ?string $table = null): string
     {
-        if (! $table) {
+        if (!$table) {
             $table = $this->getModel()->getTable();
         }
 

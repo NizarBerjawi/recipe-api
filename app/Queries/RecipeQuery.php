@@ -50,7 +50,7 @@ class RecipeQuery extends Query
     {
         return [
             AllowedFilter::exact('name'),
-            AllowedFilter::partial('user.name'),
+            AllowedFilter::partial('ingredients.name'),
             AllowedFilter::exact('user.email'),
         ];
     }
@@ -62,7 +62,7 @@ class RecipeQuery extends Query
     public function fields(): array
     {
         return [
-            'uuid',
+            // 'uuid',
             'name',
             'description',
             'createdAt',
