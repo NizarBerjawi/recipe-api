@@ -4,6 +4,7 @@ namespace App\Queries;
 
 use App\Models\Recipe;
 use App\Queries\Concerns\QueryFor;
+use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\AllowedSort;
@@ -11,6 +12,16 @@ use Spatie\QueryBuilder\AllowedSort;
 #[QueryFor(Recipe::class)]
 class RecipeQuery extends Query
 {
+    public function relations(): Collection
+    {
+        return collect([
+            'user',
+            'recipeDetail',
+            'directions',
+            'ingredients',
+        ]);
+    }
+    
     /**
      * The "relationships" that can be included in a response for this model.
      *
@@ -18,13 +29,9 @@ class RecipeQuery extends Query
      */
     public function includes(): array
     {
-        return [
-            AllowedInclude::relationship('user'),
-            AllowedInclude::relationship('recipeDetail'),
-            AllowedInclude::relationship('directions'),
-            AllowedInclude::relationship('ingredients'),
-            AllowedInclude::relationship('ingredients.unit'),
-        ];
+        return $this->relations()
+            ->map(fn(string $relation) => AllowedInclude::relationship($relation))
+            ->all();
     }
 
     /**
@@ -62,7 +69,6 @@ class RecipeQuery extends Query
     public function fields(): array
     {
         return [
-            // 'uuid',
             'name',
             'description',
             'createdAt',
@@ -71,9 +77,6 @@ class RecipeQuery extends Query
             'ingredients.name',
             'ingredients.recipeUuid',
             'ingredients.displayText',
-
-            'ingredients.unit.code',
-            'ingredients.unit.label',
 
             'recipeDetail.prepTime',
             'recipeDetail.cookTime',

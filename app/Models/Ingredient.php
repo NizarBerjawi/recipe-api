@@ -64,7 +64,7 @@ class Ingredient extends ApiModel
     }
 
     /**
-     * Get the unit associated with this ingredient.
+     * Get the units associated with this ingredient.
      */
     public function units(): BelongsToMany
     {

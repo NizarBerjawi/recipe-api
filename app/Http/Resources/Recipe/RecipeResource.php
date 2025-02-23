@@ -46,8 +46,7 @@ class RecipeResource extends JsonResource
             'user',
             'recipeDetail',
             'directions',
-            'ingredients',
-            'ingredients.unit',
+            'ingredients'
         ]);
     }
 }

@@ -56,7 +56,7 @@ class Recipe extends ApiModel
      */
     public function recipeDetail(): HasOne
     {
-        return $this->hasOne(RecipeDetail::class);
+        return $this->hasOne(RecipeDetail::class)->addSelect('recipe_uuid');
     }
 
     /**
