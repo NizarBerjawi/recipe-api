@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Concerns\ManagesJsonApiSpec;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -11,6 +12,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  */
 class RelationshipCollection extends ResourceCollection
 {
+    use ManagesJsonApiSpec;
+
     /**
      * Transform the resource into an array.
      *
