@@ -18,7 +18,6 @@ class IngredientFactory extends Factory
     public function definition(): array
     {
         return [
-            'quantity' => fake()->randomNumber(3),
             'name' => fake()->text(20),
             'display_text' => Str::of(fake()->text(64))
                 ->lcfirst()
