@@ -15,8 +15,8 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->foreignUuid('recipe_uuid')->references('uuid')->on('recipes');
             $table->foreignUuid('unit_uuid')->nullable()->references('uuid')->on('units');
-            $table->float('quantity');
             $table->string('name');
+            $table->float('quantity');
             $table->text('display_text');
             $table->timestamps();
             $table->softDeletes();

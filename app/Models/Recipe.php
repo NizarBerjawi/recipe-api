@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Api\ApiModel;
 use App\Models\Scopes\UserRelationScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -71,5 +72,13 @@ class Recipe extends ApiModel
     public function ingredients(): HasMany
     {
         return $this->hasMany(Ingredient::class);
+    }
+
+    /**
+     * Get the Ingredients created by a specific User
+     */
+    public function scopeByUser(Builder $query, User $user): Builder
+    {
+        return $query->where('recipes.user_uuid', $user->getKey());
     }
 }

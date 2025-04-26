@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Models\Api\ApiModel;
 use App\Models\Scopes\UserRelationScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -56,7 +56,7 @@ class Ingredient extends ApiModel
     }
 
     /**
-     * Get the recipe associated with this ingredient.
+     * Get the recipe that owns the recipe detail.
      */
     public function recipe(): BelongsTo
     {
@@ -85,5 +85,13 @@ class Ingredient extends ApiModel
             'quantity' => $this->quantity,
             'name' => $this->name,
         ], true);
+    }
+
+    /**
+     * Get the Directions created by a specific User
+     */
+    public function scopeByUser(Builder $query, User $user): Builder
+    {
+        return $this->whereHas('user', fn ($query) => $query->where('users.uuid', $user->getKey()));
     }
 }
