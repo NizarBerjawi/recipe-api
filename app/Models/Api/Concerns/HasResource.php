@@ -20,7 +20,7 @@ trait HasResource
 
         $name = $reflection->getShortName();
 
-        $filesystem = new Filesystem();
+        $filesystem = new Filesystem;
 
         $resourceName = "{$name}Resource";
 

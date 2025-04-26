@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($users as $user) {
             $token = $user->createToken('access_token');
-            
+
             Log::notice('TOKENS', [
                 'userId' => $user->getKey(),
                 'token' => $token->plainTextToken,
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
                 Ingredient::factory()
                     ->count($maxIngredients)
                     ->for($recipe)
-                    ->for($unit);                    
+                    ->for($unit);
             });
         }
     }

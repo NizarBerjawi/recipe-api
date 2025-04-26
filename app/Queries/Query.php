@@ -22,7 +22,7 @@ abstract class Query
     public function builder(): QueryBuilder
     {
         $model = $this->subject();
-        
+
         return QueryBuilder::for($model::class)
             ->defaultSort($model->getKeyName())
             ->allowedSorts($this->sorts())
