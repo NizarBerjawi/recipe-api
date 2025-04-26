@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($users as $user) {
             $token = $user->createToken('access_token');
+            
             Log::notice('TOKENS', [
                 'userId' => $user->getKey(),
                 'token' => $token->plainTextToken,
@@ -38,27 +39,16 @@ class DatabaseSeeder extends Seeder
                 ->count($maxRecipes)
                 ->for($user)
                 ->has(RecipeDetail::factory())
-                ->has(
-                    Direction::factory()->count($maxDirections)
-                )
+                ->has(Direction::factory()->count($maxDirections))
                 ->create();
 
-            $ingredients = Ingredient::factory()
-                ->count($maxIngredients)
-                ->for($user)
-                ->create();
+            $recipes->each(function (Recipe $recipe) use ($maxIngredients) {
+                $unit = Unit::inRandomOrder()->limit(1)->first();
 
-            $recipes->each(function (Recipe $recipe) use ($ingredients) {
-                $recipeIngredients = $ingredients->random(
-                    fake()->numberBetween(1, $ingredients->count())
-                );
-
-                $recipeIngredients->each(
-                    fn (Ingredient $ingredient) => $recipe->ingredients()->attach($ingredient, [
-                        'unit_uuid' => Unit::inRandomOrder()->limit(1)->first()->getKey(),
-                        'quantity' => fake()->randomFloat(),
-                    ])
-                );
+                Ingredient::factory()
+                    ->count($maxIngredients)
+                    ->for($recipe)
+                    ->for($unit);                    
             });
         }
     }

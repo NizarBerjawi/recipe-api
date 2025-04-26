@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Blade;
 
@@ -56,7 +56,7 @@ class Ingredient extends ApiModel
     }
 
     /**
-     * Get the recipe associated with this ingredient.
+     * Get the recipe that owns the recipe detail.
      */
     public function recipes(): BelongsToMany
     {
@@ -74,9 +74,9 @@ class Ingredient extends ApiModel
     /**
      * Get the user that owns the recipe direction.
      */
-    public function user(): BelongsTo
+    public function user(): HasOneThrough
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOneThrough(User::class, Recipe::class, 'uuid', 'uuid', 'recipe_uuid', 'user_uuid');
     }
 
     public function getDisplay()
@@ -88,10 +88,10 @@ class Ingredient extends ApiModel
     }
 
     /**
-     * Get the Ingredients created by a specific User
+     * Get the Directions created by a specific User
      */
     public function scopeByUser(Builder $query, User $user): Builder
     {
-        return $query->where('ingredients.user_uuid', $user->getKey());
+        return $this->whereHas('user', fn ($query) => $query->where('users.uuid', $user->getKey()));
     }
 }

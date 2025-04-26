@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +19,10 @@ class IngredientFactory extends Factory
     {
         return [
             'name' => fake()->text(20),
+            'display_text' => Str::of(fake()->text(64))
+                ->lcfirst()
+                ->prepend('{{ $quantity }} {{ $name }} '),
+            'quantity' => fake()->randomFloat(),
         ];
     }
 }

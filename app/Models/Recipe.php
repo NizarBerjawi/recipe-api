@@ -90,4 +90,12 @@ class Recipe extends ApiModel
     {
         return $query->where('recipes.user_uuid', $user->getKey());
     }
+
+    /**
+     * Get the Ingredients created by a specific User
+     */
+    public function scopeByUser(Builder $query, User $user): Builder
+    {
+        return $query->where('recipes.user_uuid', $user->getKey());
+    }
 }
