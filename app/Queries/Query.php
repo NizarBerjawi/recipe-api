@@ -23,24 +23,12 @@ abstract class Query
     {
         $model = $this->subject();
 
-        $builder = QueryBuilder::for($model::class)
+        return QueryBuilder::for($model::class)
             ->defaultSort($model->getKeyName())
             ->allowedSorts($this->sorts())
             ->allowedFields($this->fields())
             ->allowedIncludes($this->includes())
             ->allowedFilters($this->filters());
-
-
-        $this->relations()->map(fn(string $relation) => $model->{$relation}());
-
-        $fields = $builder->getRequestedFieldsForRelatedTable('recipeDetail');
-        // die(json_encode($builder->getRequestedFieldsForRelatedTable('ingredients')));
-        
-        return $builder->with([
-            'recipeDetail' => fn($query) => $query->select($builder->getRequestedFieldsForRelatedTable('recipeDetail'))->addSelect('recipe_uuid'),
-            // 'ingredients' => fn($query) => $query->select($builder->getRequestedFieldsForRelatedTable('ingredients'))->addSelect('recipe_uuid'),
-        ]);
-
     }
 
     /**

@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Api\Contracts\JsonApiResource;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -34,13 +32,13 @@ class LinksResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $url = config('app.url').'/'.$this->resource->getType() . '/' . $this->resource->getKey();
+        $url = config('app.url').'/'.$this->resource->getType().'/'.$this->resource->getKey();
 
         return [
             'links' => [
                 'self' => "$url/relationships/{$this->relationName}",
                 'related' => "$url/{$this->relationName}",
-            ]
+            ],
         ];
     }
 }

@@ -90,7 +90,7 @@ trait ManagesJsonApiSpec
                     $relationName,
                     [
                         ...RelationshipResource::make($this->whenLoaded($relationship))->toArray(request()),
-                        ...LinksResource::make($model, $relationName)->toArray(request())
+                        ...LinksResource::make($model, $relationName)->toArray(request()),
                     ]
                 );
             }
@@ -100,7 +100,7 @@ trait ManagesJsonApiSpec
                     $relationName,
                     [
                         ...RelationshipCollection::make($this->whenLoaded($relationship))->toArray(request()),
-                        ...LinksResource::make($model, $relationName)->toArray(request())
+                        ...LinksResource::make($model, $relationName)->toArray(request()),
                     ]
                 );
             }
