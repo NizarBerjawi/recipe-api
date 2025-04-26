@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->string('code');
             $table->string('label');
+            $table->string('type');
             $table->timestamps();
             $table->softDeletes();
         });

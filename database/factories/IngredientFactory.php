@@ -23,6 +23,7 @@ class IngredientFactory extends Factory
             'display_text' => Str::of(fake()->text(64))
                 ->lcfirst()
                 ->prepend('{{ $quantity }} {{ $name }} '),
+            'quantity' => fake()->randomFloat(),
         ];
     }
 }
