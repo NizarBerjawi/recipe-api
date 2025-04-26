@@ -15,8 +15,8 @@ trait AddsFieldsToQuery
 
         $fields = $this->request->fields();
 
-        if (!$fields->isEmpty() && config('query-builder.convert_field_names_to_snake_case', false)) {
-            $fields = $fields->mapWithKeys(fn($fields, $table) => [$table => collect($fields)->map(fn($field) => Str::snake($field))->toArray()]);
+        if (! $fields->isEmpty() && config('query-builder.convert_field_names_to_snake_case', false)) {
+            $fields = $fields->mapWithKeys(fn ($fields, $table) => [$table => collect($fields)->map(fn ($field) => Str::snake($field))->toArray()]);
         }
 
         // Apply additional table name conversion based on strategy

@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Concerns\ForResource;
 use App\Rules\ValidRelationshipId;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -73,14 +75,12 @@ class JsonApiRequest extends FormRequest
 
     /**
      * Generate rules for all the possible relationships
-     *
-     * @return array{data.relationships: string}
      */
-    public function relationshipRules(Collection $relations = []): array
+    public function relationshipRules(Collection $relations): Collection
     {
-        $defaultRule = [
-            'data.relationships' => 'array:'.implode(',', $relations->all()),
-        ];
+        $defaultRule = Collection::make([
+            'data.relationships' => 'array:'.$relations->implode(','),
+        ]);
 
         $otherRules = $relations->map(function (string $requiredRelation) {
             /** @var \Illuminate\Database\Eloquent\Relations\Relation */
@@ -104,6 +104,6 @@ class JsonApiRequest extends FormRequest
             };
         });
 
-        return $defaultRule + $otherRules;
+        return $defaultRule->merge($otherRules);
     }
 }

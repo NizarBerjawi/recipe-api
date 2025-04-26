@@ -21,10 +21,22 @@ class RecipeResource extends JsonResource
             'type' => $this->resource->getType(),
             'id' => $this->resource->getKey(),
             'attributes' => [
-                'name' => $this->resource->name,
-                'description' => $this->resource->description,
-                'createdAt' => $this->resource->created_at,
-                'updatedAt' => $this->resource->updated_at,
+                'name' => $this->when(
+                    $this->resource->hasAttribute('name'),
+                    fn () => $this->resource->name
+                ),
+                'description' => $this->when(
+                    $this->resource->hasAttribute('description'),
+                    fn () => $this->resource->description
+                ),
+                'createdAt' => $this->when(
+                    $this->resource->hasAttribute('created_at'),
+                    fn () => $this->resource->created_at
+                ),
+                'updatedAt' => $this->when(
+                    $this->resource->hasAttribute('updated_at'),
+                    fn () => $this->resource->updated_at
+                ),
             ],
             'relationships' => $this->collectRelationships([
                 'user', 'recipeDetail', 'directions', 'ingredients',
@@ -46,7 +58,7 @@ class RecipeResource extends JsonResource
             'user',
             'recipeDetail',
             'directions',
-            'ingredients'
+            'ingredients',
         ]);
     }
 }

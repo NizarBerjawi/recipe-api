@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Concerns;
 
+use App\Http\Resources\LinksResource;
 use App\Http\Resources\RelationshipCollection;
 use App\Http\Resources\RelationshipResource;
 use App\Models\Api\Contracts\JsonApiResource;
@@ -55,10 +56,11 @@ trait ManagesJsonApiSpec
             return $this->when(false, null);
         }
 
+        /** @var \Illuminate\Database\Eloquent\Model */
         $model = $this->resource;
 
-        if (! $model instanceof Model) {
-            throw new Exception('Relations can only be collected for a resource of type: '.Model::class);
+        if (! $model instanceof JsonApiResource) {
+            throw new Exception('Relations can only be collected for a resource of type: '.JsonApiResource::class);
         }
 
         $relationships = Collection::make();
@@ -67,29 +69,39 @@ trait ManagesJsonApiSpec
                 continue;
             }
 
+            $related = $model->{$relationship}()->getRelated();
+
             $relation = $model->getRelation($relationship);
 
             $relationName = is_string($alias) ? $alias : $relationship;
 
             if (! $relation) {
-                $relationResource = RelationshipResource::make(null);
-
-                $relationships->put($relationName, $relationResource);
+                $relationships->put(
+                    $relationName,
+                    RelationshipResource::make(null)
+                );
 
                 continue;
             }
 
             if ($relation instanceof Model) {
+
                 $relationships->put(
                     $relationName,
-                    RelationshipResource::make($this->whenLoaded($relationship))
+                    [
+                        ...RelationshipResource::make($this->whenLoaded($relationship))->toArray(request()),
+                        ...LinksResource::make($model, $relationName)->toArray(request())
+                    ]
                 );
             }
 
             if ($relation instanceof Collection) {
                 $relationships->put(
                     $relationName,
-                    RelationshipCollection::make($this->whenLoaded($relationship))
+                    [
+                        ...RelationshipCollection::make($this->whenLoaded($relationship))->toArray(request()),
+                        ...LinksResource::make($model, $relationName)->toArray(request())
+                    ]
                 );
             }
         }

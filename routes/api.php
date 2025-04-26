@@ -4,6 +4,7 @@ use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RecipeDetailController;
+use App\Http\Controllers\RecipeRelationController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,14 @@ Route::controller(RecipeController::class)->group(function () {
     Route::post('/recipes', 'store')->name('recipes.store');
     Route::get('/recipes/{recipe}', 'show')->name('recipes.show');
     Route::delete('/recipes/{recipe}', 'destroy')->name('recipes.destroy');
+});
+
+Route::controller(RecipeRelationController::class)->group(function() {
+    Route::get('/recipes/{recipe}/relationships/{relation}', 'show')->name('recipe.user.show');
+    
+    Route::patch('/recipes/{recipe}/relationships/user', 'updateUserRelation')->name('recipe.user.update');
+    Route::patch('/recipes/{recipe}/relationships/ingredients', 'updateIngredientsRelation')->name('recipe.ingredients.update');
+    
 });
 
 Route::controller(IngredientController::class)->group(function () {

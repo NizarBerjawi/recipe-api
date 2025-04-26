@@ -90,7 +90,7 @@ class RecipeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(RecipeQuery $query, Recipe $recipe)
+    public function show(Recipe $recipe)
     {
         $recipe = $this->query
             ->builder()

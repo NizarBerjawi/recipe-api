@@ -2,8 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Api\ApiModel;
-use App\Models\Api\ApiUser;
+use App\Http\Resources\Concerns\ManagesJsonApiSpec;
 use App\Models\Api\Contracts\JsonApiResource;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +14,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class RelationshipResource extends JsonResource
 {
+    use ManagesJsonApiSpec;
+    
     /**
      * Transform the resource into an array.
      *
@@ -22,27 +23,21 @@ class RelationshipResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @var ApiModel|ApiUser|JsonApiResource|null */
-        $model = $this->resource;
+        /** @var JsonApiResource&Model|null */
+        $relation = $this->resource;
 
-        if (! $model) {
-            return [
-                'data' => null,
-            ];
+        if (! $relation) {
+            return ['data' => null];
         }
 
-        if (! $model instanceof Model) {
+        if (! $relation instanceof Model && ! $relation instanceof JsonApiResource) {
             throw new Exception('Relations can only be collected for a resource of type: '.Model::class);
-        }
-
-        if (! $model instanceof JsonApiResource) {
-            throw new Exception('Relations can only be collected for a resource of type: '.JsonApiResource::class);
         }
 
         return [
             'data' => [
-                'type' => $this->resource->getType(),
-                'id' => $this->resource->getKey(),
+                'type' => $relation->getType(),
+                'id' => $relation->getKey(),
             ],
         ];
     }

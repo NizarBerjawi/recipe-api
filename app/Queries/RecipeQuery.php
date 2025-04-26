@@ -11,17 +11,7 @@ use Spatie\QueryBuilder\AllowedSort;
 
 #[QueryFor(Recipe::class)]
 class RecipeQuery extends Query
-{
-    public function relations(): Collection
-    {
-        return collect([
-            'user',
-            'recipeDetail',
-            'directions',
-            'ingredients',
-        ]);
-    }
-    
+{    
     /**
      * The "relationships" that can be included in a response for this model.
      *
@@ -29,9 +19,13 @@ class RecipeQuery extends Query
      */
     public function includes(): array
     {
-        return $this->relations()
-            ->map(fn(string $relation) => AllowedInclude::relationship($relation))
-            ->all();
+        return [
+            AllowedInclude::relationship('user'),
+            AllowedInclude::relationship('recipeDetail'),
+            AllowedInclude::relationship('directions'),
+            AllowedInclude::relationship('ingredients'),
+        ];
+
     }
 
     /**

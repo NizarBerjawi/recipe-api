@@ -63,5 +63,5 @@ return [
 
     'convert_field_names_to_snake_case' => true,
 
-    'always_select_primary_key' => true
+    'always_select_primary_key' => true,
 ];

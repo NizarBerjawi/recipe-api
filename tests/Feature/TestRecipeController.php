@@ -2,12 +2,13 @@
 
 use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Process;
 use Symfony\Component\HttpFoundation\Response;
 
 beforeEach(function () {
     Process::env(environment: [
         'MAX_USERS' => 1,
-        'MAX_RECIPES' => 10
+        'MAX_RECIPES' => 10,
     ])->run(command: 'php artisan db:seed');
 
     $this->token = User::first()->createToken('access_token')->plainTextToken;
@@ -38,40 +39,40 @@ describe('GET /recipes', function () {
                         'updatedAt',
                     ],
                     'links' => [
-                        'self'
-                    ]
-                ]
+                        'self',
+                    ],
+                ],
             ],
             'links' => [
-                'first', 
-                'last', 
-                'prev', 
-                'next'
+                'first',
+                'last',
+                'prev',
+                'next',
             ],
             'meta' => [
-                'currentPage', 
-                'from', 
-                'lastPage', 
+                'currentPage',
+                'from',
+                'lastPage',
                 'links' => [
                     '*' => [
                         'url',
                         'label',
-                        'active'
-                    ]
+                        'active',
+                    ],
                 ],
                 'path',
                 'perPage',
                 'to',
-                'total'
-            ]
+                'total',
+            ],
         ]);
     });
 
     it('includes relationships when requested', function () {
         $query = Arr::query([
-            'include' => ['user', 'recipeDetail', 'directions', 'ingredients']
+            'include' => ['user', 'recipeDetail', 'directions', 'ingredients'],
         ]);
-        $url = route('recipes.index') . '?'. $query;
+        $url = route('recipes.index').'?'.$query;
 
         $response = $this->get($url, ['Authorization' => "Bearer $this->token"]);
 
@@ -79,22 +80,22 @@ describe('GET /recipes', function () {
             'data' => [
                 '*' => [
                     'relationships' => [
-                        'user', 'recipeDetail', 'directions', 'ingredients'
+                        'user', 'recipeDetail', 'directions', 'ingredients',
                     ],
-                ]
+                ],
             ],
             'included' => [
                 '*' => [
                     'type',
                     'id',
                     'attributes',
-                    'links'
-                ]
-            ]
+                    'links',
+                ],
+            ],
         ]);
     });
 
-    it('limits the number of items on a page using query params', function() {
+    it('limits the number of items on a page using query params', function () {
         $url = route('recipes.index');
 
         $response = $this->get($url, ['Authorization' => "Bearer $this->token"]);
@@ -103,11 +104,11 @@ describe('GET /recipes', function () {
 
         $query = Arr::query([
             'page' => [
-                'size' => 1
-            ]
+                'size' => 1,
+            ],
         ]);
 
-        $urlWithQuery = route('recipes.index') . '?' . $query;
+        $urlWithQuery = route('recipes.index').'?'.$query;
 
         $response = $this->get($urlWithQuery, ['Authorization' => "Bearer $this->token"]);
 
