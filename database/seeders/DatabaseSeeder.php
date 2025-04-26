@@ -48,7 +48,8 @@ class DatabaseSeeder extends Seeder
                 Ingredient::factory()
                     ->count($maxIngredients)
                     ->for($recipe)
-                    ->for($unit);
+                    ->for($unit)
+                    ->create();
             });
         }
     }

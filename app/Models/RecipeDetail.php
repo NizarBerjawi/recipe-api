@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Models\Api\ApiModel;
-use App\Models\Scopes\UserRelationScope;
+use App\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[ScopedBy([UserRelationScope::class])]
+#[ScopedBy([UserScope::class])]
 class RecipeDetail extends ApiModel
 {
     use HasFactory, HasUuids, SoftDeletes;
@@ -57,7 +58,7 @@ class RecipeDetail extends ApiModel
     }
 
     /**
-     * Get the recpie that owns the recipe detail.
+     * Get the recipe that owns the recipe detail.
      */
     public function recipe(): BelongsTo
     {
@@ -70,5 +71,13 @@ class RecipeDetail extends ApiModel
     public function user(): HasOneThrough
     {
         return $this->hasOneThrough(User::class, Recipe::class, 'uuid', 'uuid', 'recipe_uuid', 'user_uuid');
+    }
+
+    /**
+     * Get the Recipe Details created by a specific User
+     */
+    public function scopeByUser(Builder $query, User $user)
+    {
+        return $this->whereHas('user', fn ($query) => $query->where('users.uuid', $user->getKey()));
     }
 }
