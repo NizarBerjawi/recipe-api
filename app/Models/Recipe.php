@@ -56,7 +56,7 @@ class Recipe extends ApiModel
      */
     public function recipeDetail(): HasOne
     {
-        return $this->hasOne(RecipeDetail::class)->addSelect('recipe_uuid');
+        return $this->hasOne(RecipeDetail::class);
     }
 
     /**
@@ -70,27 +70,11 @@ class Recipe extends ApiModel
     /**
      * Get the ingredients associated with this recipe.
      */
-    public function ingredients(): BelongsToMany
+    public function ingredients(): HasMany
     {
-        return $this->belongsToMany(Ingredient::class);
+        return $this->hasMany(Ingredient::class);
     }
-
-    /**
-     * Get the units used in this recipe.
-     */
-    public function units(): BelongsToMany
-    {
-        return $this->belongsToMany(Unit::class, 'ingredient_recipe');
-    }
-
-    /**
-     * Get the Ingredients created by a specific User
-     */
-    public function scopeByUser(Builder $query, User $user): Builder
-    {
-        return $query->where('recipes.user_uuid', $user->getKey());
-    }
-
+    
     /**
      * Get the Ingredients created by a specific User
      */

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -58,17 +59,17 @@ class Ingredient extends ApiModel
     /**
      * Get the recipe that owns the recipe detail.
      */
-    public function recipes(): BelongsToMany
+    public function recipe(): BelongsTo
     {
-        return $this->belongsToMany(Recipe::class);
+        return $this->belongsTo(Recipe::class);
     }
 
     /**
      * Get the units associated with this ingredient.
      */
-    public function units(): BelongsToMany
+    public function unit(): BelongsTo
     {
-        return $this->belongsToMany(Unit::class, 'ingredient_recipe');
+        return $this->belongsTo(Unit::class);
     }
 
     /**

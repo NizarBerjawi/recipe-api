@@ -6,6 +6,7 @@ use App\Models\Api\ApiModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Unit extends ApiModel
@@ -37,13 +38,8 @@ class Unit extends ApiModel
         'type',
     ];
 
-    public function ingredients(): BelongsToMany
+    public function ingredients(): HasMany
     {
-        return $this->belongsToMany(Ingredient::class, 'ingredient_recipe');
-    }
-
-    public function recipes(): BelongsToMany
-    {
-        return $this->belongsToMany(Recipe::class, 'ingredient_recipe');
+        return $this->hasMany(Ingredient::class);
     }
 }
