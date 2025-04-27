@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Api\ApiModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Unit extends ApiModel
@@ -33,5 +35,11 @@ class Unit extends ApiModel
     protected $fillable = [
         'code',
         'label',
+        'type',
     ];
+
+    public function ingredients(): HasMany
+    {
+        return $this->hasMany(Ingredient::class);
+    }
 }

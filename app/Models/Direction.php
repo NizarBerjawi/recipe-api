@@ -3,15 +3,16 @@
 namespace App\Models;
 
 use App\Models\Api\ApiModel;
-use App\Models\Scopes\UserRelationScope;
+use App\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[ScopedBy([UserRelationScope::class])]
+#[ScopedBy([UserScope::class])]
 class Direction extends ApiModel
 {
     use HasFactory, HasUuids, SoftDeletes;
@@ -66,5 +67,13 @@ class Direction extends ApiModel
     public function user(): HasOneThrough
     {
         return $this->hasOneThrough(User::class, Recipe::class, 'uuid', 'uuid', 'recipe_uuid', 'user_uuid');
+    }
+
+    /**
+     * Get the Directions created by a specific User
+     */
+    public function scopeByUser(Builder $query, User $user): Builder
+    {
+        return $this->whereHas('user', fn ($query) => $query->where('users.uuid', $user->getKey()));
     }
 }

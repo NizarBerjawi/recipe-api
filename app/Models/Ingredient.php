@@ -3,17 +3,18 @@
 namespace App\Models;
 
 use App\Models\Api\ApiModel;
-use App\Models\Scopes\UserRelationScope;
+use App\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Blade;
 
-#[ScopedBy([UserRelationScope::class])]
+#[ScopedBy([UserScope::class])]
 class Ingredient extends ApiModel
 {
     use HasFactory, HasUuids, SoftDeletes;
