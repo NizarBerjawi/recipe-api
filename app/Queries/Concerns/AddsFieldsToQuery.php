@@ -2,7 +2,6 @@
 
 namespace App\Queries\Concerns;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\QueryBuilder\Exceptions\UnknownIncludedFieldsQuery;
@@ -94,7 +93,7 @@ trait AddsFieldsToQuery
         if (! $this->allowedFields instanceof Collection) {
             throw new UnknownIncludedFieldsQuery($fields);
         }
-        
+
         return $fields;
     }
 

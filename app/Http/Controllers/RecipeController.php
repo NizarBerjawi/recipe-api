@@ -26,6 +26,7 @@ class RecipeController extends Controller
         $result = $this->query->builder()->first();
 
         return $result;
+
         return RecipeCollection::make(
             $this->query->builder()->jsonPaginate()
         );

@@ -4,14 +4,13 @@ namespace App\Queries;
 
 use App\Models\Recipe;
 use App\Queries\Concerns\QueryFor;
-use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\AllowedSort;
 
 #[QueryFor(Recipe::class)]
 class RecipeQuery extends Query
-{    
+{
     /**
      * The "relationships" that can be included in a response for this model.
      *

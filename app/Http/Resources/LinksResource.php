@@ -13,7 +13,7 @@ class LinksResource extends JsonResource
      * @var string|null
      */
     public static $wrap = 'links';
-    
+
     /**
      * Create a new resource instance.
      *

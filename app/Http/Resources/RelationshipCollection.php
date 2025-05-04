@@ -25,7 +25,7 @@ class RelationshipCollection extends ResourceCollection
             'data' => $this->collection->map(fn (JsonResource $item) => [
                 'type' => $item->resource->getType(),
                 'id' => $item->resource->getKey(),
-            ])
+            ]),
         ];
     }
 }

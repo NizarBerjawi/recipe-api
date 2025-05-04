@@ -73,7 +73,7 @@ class Recipe extends ApiModel
     {
         return $this->hasMany(Ingredient::class);
     }
-    
+
     /**
      * Get the Ingredients created by a specific User
      */

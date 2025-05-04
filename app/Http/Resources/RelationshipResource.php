@@ -15,7 +15,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class RelationshipResource extends JsonResource
 {
     use ManagesJsonApiSpec;
-    
+
     /**
      * Transform the resource into an array.
      *

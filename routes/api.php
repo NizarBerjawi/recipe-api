@@ -16,12 +16,12 @@ Route::controller(RecipeController::class)->group(function () {
     Route::delete('/recipes/{recipe}', 'destroy')->name('recipes.destroy');
 });
 
-Route::controller(RecipeRelationController::class)->group(function() {
+Route::controller(RecipeRelationController::class)->group(function () {
     Route::get('/recipes/{recipe}/relationships/{relation}', 'show')->name('recipe.user.show');
-    
+
     Route::patch('/recipes/{recipe}/relationships/user', 'updateUserRelation')->name('recipe.user.update');
     Route::patch('/recipes/{recipe}/relationships/ingredients', 'updateIngredientsRelation')->name('recipe.ingredients.update');
-    
+
 });
 
 Route::controller(IngredientController::class)->group(function () {
