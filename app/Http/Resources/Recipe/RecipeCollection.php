@@ -22,7 +22,6 @@ class RecipeCollection extends ResourceCollection
             'recipeDetail',
             'directions',
             'ingredients',
-            'ingredients.unit',
         ]);
     }
 }

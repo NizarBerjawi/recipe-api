@@ -19,9 +19,9 @@ class IngredientQuery extends Query
     public function includes(): array
     {
         return [
-            AllowedInclude::relationship('recipe'),
-            AllowedInclude::relationship('recipe.user'),
-            AllowedInclude::relationship('unit'),
+            AllowedInclude::relationship('recipes'),
+            AllowedInclude::relationship('units'),
+            AllowedInclude::relationship('user'),
         ];
     }
 

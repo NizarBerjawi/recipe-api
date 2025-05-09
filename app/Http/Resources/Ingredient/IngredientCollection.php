@@ -18,9 +18,9 @@ class IngredientCollection extends ResourceCollection
     public function with(Request $request): array
     {
         return $this->collectIncludes([
-            'recipe',
-            'recipe.user',
-            'unit',
+            'recipes',
+            'units',
+            'user',
         ]);
     }
 }

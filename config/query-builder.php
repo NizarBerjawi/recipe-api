@@ -61,5 +61,7 @@ return [
      */
     'convert_relation_names_to_snake_case_plural' => false,
 
-    'allow_selecting_fields_as_camel_case' => true,
+    'convert_field_names_to_snake_case' => true,
+
+    'always_select_primary_key' => true,
 ];

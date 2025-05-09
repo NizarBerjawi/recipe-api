@@ -2,8 +2,8 @@
 
 namespace App\Queries;
 
-use App\Models\Api\ApiModel;
 use App\Queries\Concerns\QueryFor;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use ReflectionClass;
 
@@ -34,7 +34,7 @@ abstract class Query
     /**
      * Return the "subject" for this query
      */
-    public function subject(): ApiModel
+    public function subject(): Model
     {
         $reflectionClass = new ReflectionClass(static::class);
 

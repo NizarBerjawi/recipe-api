@@ -22,12 +22,10 @@ class IngredientResource extends JsonResource
             'id' => $this->resource->getKey(),
             'attributes' => [
                 'name' => $this->resource->name,
-                'quantity' => $this->resource->quantity,
-                'displayText' => $this->resource->display_text,
                 'createdAt' => $this->resource->created_at,
                 'updatedAt' => $this->resource->updated_at,
             ],
-            'relationships' => $this->collectRelationships(['recipe', 'unit']),
+            'relationships' => $this->collectRelationships(['recipes', 'units', 'user']),
             'links' => [
                 'self' => route('ingredients.show', $this->resource->getKey()),
             ],

@@ -23,8 +23,8 @@ class RecipeQuery extends Query
             AllowedInclude::relationship('recipeDetail'),
             AllowedInclude::relationship('directions'),
             AllowedInclude::relationship('ingredients'),
-            AllowedInclude::relationship('ingredients.unit'),
         ];
+
     }
 
     /**
@@ -50,7 +50,7 @@ class RecipeQuery extends Query
     {
         return [
             AllowedFilter::exact('name'),
-            AllowedFilter::partial('user.name'),
+            AllowedFilter::partial('ingredients.name'),
             AllowedFilter::exact('user.email'),
         ];
     }
@@ -62,7 +62,6 @@ class RecipeQuery extends Query
     public function fields(): array
     {
         return [
-            'uuid',
             'name',
             'description',
             'createdAt',
@@ -71,9 +70,6 @@ class RecipeQuery extends Query
             'ingredients.name',
             'ingredients.recipeUuid',
             'ingredients.displayText',
-
-            'ingredients.unit.code',
-            'ingredients.unit.label',
 
             'recipeDetail.prepTime',
             'recipeDetail.cookTime',
